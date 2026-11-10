@@ -16,7 +16,7 @@ export default function Navbar() {
         <Link href="/" aria-label="ZeroRelay home" className="group flex shrink-0 items-center gap-2.5">
           <span className="relative flex h-8 w-8 items-center justify-center">
             <Image
-              src="/zerorelay-emblem.png"
+              src="/zerorelay-emblem-lime.png"
               alt=""
               width={40}
               height={40}
