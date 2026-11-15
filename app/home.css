@@ -213,6 +213,11 @@
 
 .cta-panel :focus-visible { outline-color: #1b170d; }
 
+/* The default lime hover ring disappears on a lime panel; use an ink one here. */
+.cta-panel .btn-ink:hover {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 18px 34px -14px rgba(27, 23, 13, 0.7), 0 0 0 4px rgba(27, 23, 13, 0.14);
+}
+
 /* Standalone coin (BrandCoin): reuses the .coin* styles from app/hero.css. */
 .brand-coin {
   width: var(--size);

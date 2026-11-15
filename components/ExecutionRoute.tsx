@@ -99,7 +99,7 @@ export default function ExecutionRoute() {
   }, []);
 
   return (
-    <section id="execution" className="relative scroll-mt-24 px-5 py-24 sm:px-8 sm:py-32">
+    <section id="execution" className="relative scroll-mt-24 px-5 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-32">
       <div className="relative z-10 mx-auto max-w-6xl">
         <ScrollReveal className="mb-16 flex flex-col justify-between gap-6 sm:mb-20 md:flex-row md:items-end">
           <div>

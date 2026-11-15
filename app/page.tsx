@@ -33,15 +33,13 @@ const protections = [
 export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] text-zinc-100">
-      <div className="site-atmosphere pointer-events-none absolute inset-x-0 top-0 h-[1000px]" aria-hidden="true" />
-      <div className="ambient-grid pointer-events-none absolute inset-x-0 top-0 h-[980px] opacity-40" aria-hidden="true" />
       <Navbar />
       <Hero />
       <ChainTelemetry variant="feature" />
 
       <ExecutionRoute />
 
-      <section id="security" className="relative scroll-mt-24 px-5 py-24 sm:px-8 sm:py-32">
+      <section id="security" className="relative scroll-mt-24 px-5 pb-24 pt-12 sm:px-8 sm:pb-32 sm:pt-16">
         <div className="pointer-events-none absolute -left-40 top-1/3 h-[28rem] w-[28rem] rounded-full bg-[#C6F700]/[0.07] blur-[110px]" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
           <ScrollReveal className="lg:sticky lg:top-28 lg:self-start">
