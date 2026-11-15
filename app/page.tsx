@@ -8,6 +8,7 @@ import {
 import ChainTelemetry from "@/components/ChainTelemetry";
 import ExecutionRoute from "@/components/ExecutionRoute";
 import Hero from "@/components/Hero";
+import { BrandCoin } from "@/components/HeroCoins";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -77,23 +78,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="terminal" className="relative scroll-mt-24 px-5 pb-14 sm:px-8 sm:pb-20">
-        <ScrollReveal className="route-panel mx-auto flex max-w-6xl flex-col justify-between gap-6 rounded-3xl border border-[#C6F700]/15 p-6 shadow-[0_0_44px_rgba(198,247,0,0.035)] backdrop-blur-2xl sm:flex-row sm:items-center sm:p-8">
-          <div>
-            <p id="docs" className="scroll-mt-24 font-mono text-[8px] tracking-[0.2em] text-zinc-600">LOCAL COMPILER / 04</p>
-            <h2 className="mt-2 text-xl font-medium tracking-tight text-zinc-100">Inspect the payload before integration.</h2>
-            <p className="mt-1 text-xs leading-5 text-zinc-500">Build a Robinhood Chain intent envelope without signing or sending it.</p>
+      <section id="terminal" className="relative scroll-mt-24 px-3 pb-6 sm:px-5 sm:pb-8">
+        <ScrollReveal className="cta-panel relative isolate mx-auto max-w-[88rem] overflow-hidden rounded-[2.5rem] px-6 py-16 text-[#1B170D] sm:px-12 sm:py-20 lg:px-20 lg:py-24">
+          <div className="hero-light-grid pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
+          <div className="relative mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p id="docs" className="scroll-mt-24 font-mono text-[10px] tracking-[0.22em] text-[#1B170D]/60">LOCAL COMPILER / 04</p>
+              <h2 className="mt-5 text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+                Inspect the payload <span className="whitespace-nowrap font-serif font-normal italic tracking-[-0.02em]">before integration.</span>
+              </h2>
+              <p className="mt-6 max-w-lg text-base leading-7 text-[#1B170D]/65">Build a Robinhood Chain intent envelope without signing or sending it.</p>
+              <Link href="/dashboard" className="btn-ink group mt-9 inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold">
+                Open execution terminal <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+            <div className="cta-coins relative mx-auto h-56 w-64 shrink-0 sm:h-64 sm:w-80 lg:mx-0" aria-hidden="true">
+              <BrandCoin tone="ink" size={150} delay={0} className="absolute left-2 top-4 sm:left-4" />
+              <BrandCoin tone="lime" size={120} spin="flip" delay={2} className="absolute bottom-0 right-2 sm:right-6" />
+            </div>
           </div>
-          <Link href="/dashboard" className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-[#C6F700] px-4 text-xs font-semibold text-[#1B170D] transition hover:bg-[#d6ff1a] hover:shadow-[0_0_30px_rgba(198,247,0,0.22)]">
-            Open execution terminal <ArrowUpRight size={13} />
-          </Link>
         </ScrollReveal>
       </section>
 
-      <footer className="border-t border-white/[0.06] px-5 py-5 sm:px-8">
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-2 font-mono text-[8px] tracking-[0.08em] text-zinc-700 sm:flex-row">
-          <span>© 2026 ZERO RELAY · ROBINHOOD CHAIN · 0x1237</span>
-          <span>LOCAL PREVIEW · NO SIGNING · NO RPC SUBMISSION</span>
+      <footer className="px-5 pb-10 pt-14 sm:px-8 sm:pt-16">
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <Link href="/" aria-label="ZeroRelay home" className="group inline-flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG */}
+            <img src="/zerorelay-mark-lime.svg" alt="" width={36} height={36} className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[15deg]" />
+            <span className="text-lg font-semibold tracking-[-0.04em] text-[#f7fbe2]">ZeroRelay</span>
+          </Link>
+          <div className="flex flex-col gap-2 font-mono text-[10px] tracking-[0.08em] text-[#f7fbe2]/40 sm:items-end">
+            <span>LOCAL PREVIEW · NO SIGNING · NO RPC SUBMISSION</span>
+            <span>© 2026 ZERO RELAY · ROBINHOOD CHAIN · 0x1237</span>
+          </div>
         </div>
       </footer>
     </main>

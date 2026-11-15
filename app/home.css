@@ -201,6 +201,36 @@
 .reveal-ready:not(.is-visible) .reveal-highlight { color: #f7fbe2; transition: none; }
 .reveal-ready:not(.is-visible) .reveal-highlight::before { transform: skewX(-12deg) scaleX(0); transition: none; }
 
+/* --- Terminal CTA: lime bookend to the hero ------------------------------ */
+
+.cta-panel {
+  color-scheme: light;
+  background:
+    radial-gradient(ellipse 50% 70% at 85% 50%, rgba(255, 255, 255, 0.55), transparent 70%),
+    linear-gradient(135deg, #e3f58c 0%, #c6f700 55%, #b5e400 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 40px 90px -40px rgba(198, 247, 0, 0.35);
+}
+
+.cta-panel :focus-visible { outline-color: #1b170d; }
+
+/* Standalone coin (BrandCoin): reuses the .coin* styles from app/hero.css. */
+.brand-coin {
+  width: var(--size);
+  height: var(--size);
+  perspective: 900px;
+}
+
+.brand-coin::after {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -18%;
+  height: 14%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(27, 23, 13, 0.35), transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .network-card:hover,
   .exec-stage[data-lit] .exec-card:hover { translate: none; }

@@ -256,3 +256,36 @@ function CoinFace({ tone, back = false }: { tone: Coin["tone"]; back?: boolean }
     </div>
   );
 }
+
+/** A single standalone brand coin (same styles as the hero coins) for accent art elsewhere. */
+export function BrandCoin({
+  tone,
+  size,
+  spin = "wobble",
+  delay = 0,
+  className = "",
+}: {
+  tone: Coin["tone"];
+  size: number;
+  spin?: Coin["spin"];
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`brand-coin ${className}`}
+      style={{ "--size": `${size}px`, "--i": delay } as CSSProperties}
+      aria-hidden="true"
+    >
+      <div className="coin-bob" style={{ animationDelay: `${-delay * 1.7}s` }}>
+        <div className={`coin coin-${tone} coin-spin-${spin}`} style={{ animationDelay: `${-delay * 2.3}s` }}>
+          {Array.from({ length: EDGE_LAYERS }, (_, e) => (
+            <span key={e} className="coin-edge" style={{ "--z": (e / (EDGE_LAYERS - 1) - 0.5) * 2 } as CSSProperties} />
+          ))}
+          <CoinFace tone={tone} />
+          <CoinFace tone={tone} back />
+        </div>
+      </div>
+    </div>
+  );
+}
