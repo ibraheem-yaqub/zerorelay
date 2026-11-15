@@ -44,7 +44,7 @@ export default function HomePage() {
       <div className="ambient-grid pointer-events-none absolute inset-x-0 top-0 h-[980px] opacity-40" aria-hidden="true" />
       <Navbar />
       <Hero />
-      <ChainTelemetry />
+      <ChainTelemetry variant="feature" />
 
       <section id="execution" className="relative scroll-mt-24 border-t border-white/[0.06] px-5 py-16 sm:px-8 sm:py-20">
         <WaveField className="pointer-events-none absolute inset-x-0 top-0 h-72 opacity-40" />

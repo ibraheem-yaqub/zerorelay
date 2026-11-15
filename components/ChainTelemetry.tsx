@@ -1,5 +1,6 @@
 import { Activity, Clock3, Fuel, ShieldCheck } from "lucide-react";
 import ChainMark from "@/components/ChainMark";
+import ScrollReveal from "@/components/ScrollReveal";
 import { ROBINHOOD_CHAIN } from "@/lib/robinhood-chain";
 
 const metrics = [
@@ -14,6 +15,7 @@ const metrics = [
     label: "LATENCY TARGET",
     value: "~81ms",
     detail: "Design target · not measured live",
+    target: true,
     icon: Clock3,
     tone: "text-[#d6ff1a]",
   },
@@ -28,12 +30,20 @@ const metrics = [
     label: "MEV SHIELD",
     value: "99.9%",
     detail: "Illustrative target · not independently measured",
+    target: true,
     icon: ShieldCheck,
     tone: "text-[#C6F700]/70",
   },
 ];
 
-export default function ChainTelemetry() {
+type ChainTelemetryProps = {
+  /** "feature" is the home-page ink band; "default" is the dashboard strip. */
+  variant?: "default" | "feature";
+};
+
+export default function ChainTelemetry({ variant = "default" }: ChainTelemetryProps) {
+  if (variant === "feature") return <FeatureTelemetry />;
+
   return (
     <section id="network" aria-labelledby="telemetry-title" className="relative scroll-mt-24 px-5 py-16 sm:px-8 sm:py-20">
       <div className="mx-auto max-w-6xl">
@@ -75,6 +85,60 @@ export default function ChainTelemetry() {
               </article>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureTelemetry() {
+  return (
+    <section id="network" aria-labelledby="telemetry-title" className="relative scroll-mt-24 px-3 pt-6 sm:px-5 sm:pt-8">
+      <div className="network-band relative isolate mx-auto max-w-[88rem] overflow-hidden rounded-[2.5rem] px-5 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+        <div className="network-band-grid pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
+        <div className="mx-auto max-w-6xl">
+          <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 sm:mb-14 md:flex-row md:items-end">
+            <div>
+              <p className="font-mono text-[10px] tracking-[0.22em] text-[#C6F700]">NETWORK PROFILE / 01</p>
+              <h2 id="telemetry-title" className="mt-5 flex items-center gap-4 text-4xl font-semibold tracking-[-0.05em] text-[#f7fbe2] sm:text-5xl lg:text-6xl">
+                <ChainMark chain="robinhood" className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
+                Robinhood Chain L2
+              </h2>
+            </div>
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#C6F700]/20 bg-[#C6F700]/[0.06] px-3.5 py-2 font-mono text-[10px] tracking-[0.08em] text-[#f7fbe2]/75">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#f7fbe2]/35" aria-hidden="true" />
+              MAINNET CONFIGURATION · NOT CONNECTED
+            </span>
+          </ScrollReveal>
+
+          <ScrollReveal className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {metrics.map((metric) => {
+              const Icon = metric.icon;
+              const isTarget = "target" in metric && metric.target;
+              return (
+                <article key={metric.label} className="network-card stagger-item group relative flex flex-col overflow-hidden rounded-3xl p-6 sm:p-7">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[9px] tracking-[0.16em] text-[#f7fbe2]/50">{metric.label}</span>
+                    <span className="network-card-icon flex h-9 w-9 items-center justify-center rounded-xl">
+                      <Icon size={16} strokeWidth={1.7} />
+                    </span>
+                  </div>
+                  <p className={`mt-10 font-semibold tracking-[-0.045em] text-[#f7fbe2] ${metric.value === "Arbitrum Orbit" ? "text-[2rem] leading-[1.05]" : "text-5xl"}`}>
+                    {metric.value}
+                  </p>
+                  {isTarget ? (
+                    <p className="network-target mb-8 mt-4 w-fit rounded-lg px-2.5 py-1.5 text-[11px] leading-4">{metric.detail}</p>
+                  ) : (
+                    <p className="mb-8 mt-4 text-[12px] leading-5 text-[#f7fbe2]/55">{metric.detail}</p>
+                  )}
+                  <div className="mt-auto flex items-center justify-between border-t border-[#f7fbe2]/[0.08] pt-4 font-mono text-[9px] tracking-[0.08em] text-[#f7fbe2]/40">
+                    <span>{ROBINHOOD_CHAIN.chainIdHex}</span>
+                    <span>PREVIEW DATA</span>
+                  </div>
+                </article>
+              );
+            })}
+          </ScrollReveal>
         </div>
       </div>
     </section>

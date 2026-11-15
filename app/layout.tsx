@@ -3,6 +3,7 @@ import { Inter_Tight } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./hero.css";
+import "./home.css";
 
 // Downloaded at build time and self-hosted by Next — no runtime request to Google.
 const interTight = Inter_Tight({
