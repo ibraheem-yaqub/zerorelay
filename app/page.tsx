@@ -1,17 +1,15 @@
 import Link from "next/link";
 import {
-  ArrowRight,
   ArrowUpRight,
   Fingerprint,
   LockKeyhole,
   ShieldCheck,
-  Waypoints,
 } from "lucide-react";
 import ChainTelemetry from "@/components/ChainTelemetry";
+import ExecutionRoute from "@/components/ExecutionRoute";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
-import WaveField from "@/components/WaveField";
 
 const protections = [
   {
@@ -31,12 +29,6 @@ const protections = [
   },
 ];
 
-const routeStages = [
-  { index: "01", name: "Transaction intent", detail: "Swap · launch · tokenized asset" },
-  { index: "02", name: "Private route", detail: "Policy and payload compilation" },
-  { index: "03", name: "Execution layer", detail: "Builder / sequencer integration" },
-];
-
 export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] text-zinc-100">
@@ -46,43 +38,7 @@ export default function HomePage() {
       <Hero />
       <ChainTelemetry variant="feature" />
 
-      <section id="execution" className="relative scroll-mt-24 border-t border-white/[0.06] px-5 py-16 sm:px-8 sm:py-20">
-        <WaveField className="pointer-events-none absolute inset-x-0 top-0 h-72 opacity-40" />
-        <div className="relative z-10 mx-auto max-w-6xl">
-          <ScrollReveal className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="font-mono text-[9px] tracking-[0.2em] text-[#C6F700]/70">EXECUTION MODEL / 02</p>
-              <h2 className="mt-3 max-w-2xl text-3xl font-medium leading-tight tracking-[-0.06em] text-zinc-100 sm:text-4xl">
-                Move value without exposing intent.
-              </h2>
-            </div>
-            <span className="w-fit rounded-full border border-[#C6F700]/15 bg-[#1B170D]/75 px-3 py-1.5 font-mono text-[8px] tracking-wide text-[#d6ff1a]/80">
-              CONCEPTUAL FLOW · NOT CONNECTED
-            </span>
-          </ScrollReveal>
-
-          <div className="route-panel grid overflow-hidden rounded-3xl border border-zinc-800/70 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-2xl md:grid-cols-3">
-            {routeStages.map((stage, index) => (
-              <article key={stage.index} className="group relative min-h-44 border-b border-zinc-800/70 p-6 last:border-b-0 md:border-b-0 md:border-r md:p-7 md:last:border-r-0">
-                {index < routeStages.length - 1 ? (
-                  <ArrowRight className="absolute right-5 top-6 hidden text-zinc-700 md:block" size={14} aria-hidden="true" />
-                ) : null}
-                <p className="font-mono text-[9px] tracking-[0.16em] text-zinc-600">{stage.index} / ROUTE</p>
-                <div className="mt-7 flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#C6F700]/20 bg-[#1B170D]/70 text-[#C6F700] transition group-hover:border-[#C6F700]/50 group-hover:shadow-[0_0_24px_rgba(198,247,0,0.16)]">
-                    {index === 0 ? <Fingerprint size={16} /> : index === 1 ? <Waypoints size={16} /> : <ShieldCheck size={16} />}
-                  </span>
-                  <h3 className="text-sm font-medium text-zinc-200">{stage.name}</h3>
-                </div>
-                <p className="mt-3 pl-12 text-[10px] leading-5 text-zinc-500">{stage.detail}</p>
-              </article>
-            ))}
-          </div>
-          <p className="mt-4 font-mono text-[8px] leading-5 text-zinc-600">
-            Private inclusion depends on a configured Robinhood Chain RPC and builder/sequencer support. This site does not submit transactions.
-          </p>
-        </div>
-      </section>
+      <ExecutionRoute />
 
       <section id="security" className="relative scroll-mt-24 border-t border-white/[0.06] px-5 py-16 sm:px-8 sm:py-20">
         <div className="mx-auto max-w-6xl">

@@ -92,6 +92,89 @@
   color: rgba(247, 251, 226, 0.85);
 }
 
+/* --- Execution model: scroll-drawn relay route --------------------------- */
+
+.exec-track {
+  position: absolute;
+  z-index: 0;
+  border-radius: 2px;
+  background: rgba(247, 251, 226, 0.1);
+}
+
+.exec-track[data-axis="x"] { height: 2px; translate: 0 -1px; }
+.exec-track[data-axis="y"] { width: 2px; translate: -1px 0; }
+
+.exec-track-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #c6f700;
+  box-shadow: 0 0 14px rgba(198, 247, 0, 0.7);
+  transform-origin: 0 0;
+}
+
+.exec-track[data-axis="x"] .exec-track-fill { transform: scaleX(var(--p)); }
+.exec-track[data-axis="y"] .exec-track-fill { transform: scaleY(var(--p)); }
+
+/* The packet riding the head of the line. */
+.exec-track-head {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f7fbe2;
+  box-shadow: 0 0 0 3px #1b170d, 0 0 20px 5px rgba(198, 247, 0, 0.85);
+  opacity: calc(min(var(--p) * 20, 1) * min((1 - var(--p)) * 20, 1));
+}
+
+.exec-track[data-axis="x"] .exec-track-head { transform: translateX(calc(var(--p) * var(--len))); top: -6px; }
+.exec-track[data-axis="y"] .exec-track-head { transform: translateY(calc(var(--p) * var(--len))); left: -6px; }
+
+.exec-stage { z-index: 1; }
+
+.exec-node {
+  z-index: 1;
+  border: 1px solid rgba(247, 251, 226, 0.14);
+  background: #12100a;
+  color: rgba(247, 251, 226, 0.55);
+  transition: background-color 500ms ease, color 500ms ease, border-color 500ms ease, box-shadow 500ms ease;
+}
+
+.exec-stage[data-lit] .exec-node {
+  border-color: #c6f700;
+  background: #c6f700;
+  color: #1b170d;
+  box-shadow: 0 0 0 6px rgba(198, 247, 0, 0.12), 0 0 36px rgba(198, 247, 0, 0.45);
+}
+
+.exec-card {
+  border: 1px solid rgba(247, 251, 226, 0.07);
+  background: linear-gradient(160deg, rgba(247, 251, 226, 0.05), rgba(247, 251, 226, 0.01) 60%);
+  opacity: 0.55;
+  translate: 0 8px;
+  transition:
+    opacity 600ms ease,
+    translate 600ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 400ms ease,
+    box-shadow 400ms ease;
+}
+
+.exec-stage[data-lit] .exec-card {
+  opacity: 1;
+  translate: 0 0;
+  border-color: rgba(198, 247, 0, 0.22);
+}
+
+.exec-stage[data-lit] .exec-card:hover {
+  translate: 0 -6px;
+  border-color: rgba(198, 247, 0, 0.45);
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.9), 0 0 40px -8px rgba(198, 247, 0, 0.22);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .network-card:hover { translate: none; }
+  .network-card:hover,
+  .exec-stage[data-lit] .exec-card:hover { translate: none; }
+  .exec-card { translate: none; }
 }
