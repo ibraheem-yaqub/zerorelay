@@ -9,6 +9,16 @@ const links = [
   { label: "Docs", href: "/#docs" },
 ];
 
+const xProfileUrl = "https://x.com/zerorelayhg";
+
+function XIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-3.5 w-3.5">
+      <path d="M18.9 2h3.1l-6.8 7.8L23.2 22h-6.3l-5-7.5L5.4 22H2.2l7.3-8.4L1.8 2h6.5l4.5 6.9L18.9 2Zm-1.1 18h1.7L7.3 3.9H5.5L17.8 20Z" />
+    </svg>
+  );
+}
+
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#070809]/75 backdrop-blur-2xl">
@@ -35,6 +45,15 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <a
+            href={xProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-[#C6F700]"
+          >
+            <XIcon />
+            Follow on X
+          </a>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -57,6 +76,15 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <a
+                href={xProfileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-xs text-zinc-400 transition hover:bg-[#C6F700]/[0.08] hover:text-[#C6F700]"
+              >
+                <XIcon />
+                Follow on X
+              </a>
             </nav>
           </details>
         </div>
