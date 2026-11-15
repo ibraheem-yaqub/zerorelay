@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="120 120 528 528" role="img" aria-label="ZeroRelay">
+  <defs>
+    <clipPath id="zr-l"><rect x="-1000" y="-1000" width="1360" height="3000" transform="rotate(15 384 384)"/></clipPath>
+    <clipPath id="zr-r"><rect x="408" y="-1000" width="1360" height="3000" transform="rotate(15 384 384)"/></clipPath>
+    <mask id="zr-m" maskUnits="userSpaceOnUse" x="0" y="0" width="768" height="768">
+      <rect width="768" height="768" fill="#fff"/>
+      <g transform="rotate(15 384 384)" fill="#000">
+        <circle cx="384" cy="140" r="44"/>
+        <circle cx="384" cy="627" r="44"/>
+      </g>
+    </mask>
+  </defs>
+  <g fill="#C6F700" fill-rule="evenodd" mask="url(#zr-m)">
+    <path clip-path="url(#zr-l)" d="M400 130a220 220 0 1 0 0.01 0ZM400 228a122 122 0 1 1-0.01 0Z"/>
+    <path clip-path="url(#zr-r)" d="M368 195a220 220 0 1 0 0.01 0ZM368 293a122 122 0 1 1-0.01 0Z"/>
+  </g>
+  <g transform="rotate(15 384 384)" fill="#EEF8A0" stroke="#EEF8A0">
+    <line x1="384" y1="160" x2="384" y2="606" stroke-width="22" stroke-linecap="round"/>
+    <circle cx="384" cy="140" r="28" stroke="none"/>
+    <circle cx="384" cy="627" r="22" fill="none" stroke-width="14"/>
+  </g>
+</svg>

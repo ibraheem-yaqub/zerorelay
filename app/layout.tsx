@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { Inter_Tight } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./hero.css";
 
-const instrumentSans = localFont({
-  src: "./fonts/instrument-sans-latin.woff2",
-  variable: "--font-instrument-sans",
-  weight: "400 600",
+// Downloaded at build time and self-hosted by Next — no runtime request to Google.
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-inter-tight",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -33,7 +36,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetBrainsMono.variable} font-sans antialiased`}>
+      <body className={`${interTight.variable} ${instrumentSerif.variable} ${jetBrainsMono.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

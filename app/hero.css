@@ -1,0 +1,459 @@
+/* ==========================================================================
+   Home hero — light brand surface, entrance, buttons, coins and relay moment
+   ========================================================================== */
+
+.hero-light {
+  color-scheme: light;
+  background:
+    radial-gradient(ellipse 55% 60% at 78% 45%, rgba(198, 247, 0, 0.22), transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbe2 52%, #e3f58c 100%);
+}
+
+.hero-light ::selection {
+  color: #1b170d;
+  background: rgba(198, 247, 0, 0.75);
+}
+
+.hero-light :focus-visible {
+  outline-color: #1b170d;
+}
+
+.hero-light-grid {
+  background-image: radial-gradient(rgba(27, 23, 13, 0.11) 1px, transparent 1.2px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 70% 70% at 30% 40%, black, transparent 80%);
+}
+
+/* --- entrance ------------------------------------------------------------ */
+
+.hero-word {
+  display: inline-block;
+  white-space: pre;
+  animation: word-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+}
+
+.hero-rise {
+  animation: rise-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+}
+
+@keyframes word-in {
+  from { opacity: 0; filter: blur(14px); transform: translate3d(0, 0.28em, 0); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; filter: blur(6px); transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+
+/* Lime highlighter stroke behind the serif accent words. */
+.hero-highlight {
+  position: relative;
+  display: inline-block;
+  padding-inline: 0.08em 0.14em;
+  isolation: isolate;
+}
+
+.hero-highlight::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -0.04em;
+  right: -0.06em;
+  bottom: 0.1em;
+  height: 0.4em;
+  border-radius: 0.12em 0.3em 0.18em 0.32em;
+  background: linear-gradient(100deg, rgba(198, 247, 0, 0.85), #c6f700 40%, rgba(214, 255, 26, 0.9));
+  transform: skewX(-12deg) scaleX(0);
+  transform-origin: left center;
+  animation: highlight-in 800ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--d, 0ms) + 260ms) forwards;
+}
+
+@keyframes highlight-in {
+  to { transform: skewX(-12deg) scaleX(1); }
+}
+
+.hero-chip-lime {
+  border-radius: 0.35rem;
+  background: #c6f700;
+  padding: 0.12rem 0.4rem;
+  color: #1b170d;
+}
+
+/* --- buttons ------------------------------------------------------------- */
+
+.btn-ink,
+.btn-lime,
+.btn-ghost {
+  transition:
+    transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease;
+}
+
+.btn-ink {
+  background: #1b170d;
+  color: #f7fbe2;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 8px 20px -10px rgba(27, 23, 13, 0.6);
+}
+
+.btn-ink:hover {
+  color: #c6f700;
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 14px 30px -12px rgba(27, 23, 13, 0.55), 0 0 0 4px rgba(198, 247, 0, 0.45);
+}
+
+.btn-lime {
+  background: #c6f700;
+  color: #1b170d;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 10px 24px -12px rgba(111, 140, 0, 0.8);
+}
+
+.btn-lime:hover {
+  background: #d6ff1a;
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 18px 36px -14px rgba(111, 140, 0, 0.9), 0 0 32px rgba(198, 247, 0, 0.55);
+}
+
+.btn-ghost {
+  border: 1px solid rgba(27, 23, 13, 0.14);
+  background: rgba(255, 255, 255, 0.6);
+  color: #1b170d;
+  backdrop-filter: blur(10px);
+}
+
+.btn-ghost:hover {
+  border-color: rgba(27, 23, 13, 0.3);
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -16px rgba(27, 23, 13, 0.45);
+}
+
+.btn-ink:active,
+.btn-lime:active,
+.btn-ghost:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.hero-form {
+  box-shadow: 0 1px 0 #fff inset, 0 24px 60px -28px rgba(27, 23, 13, 0.35);
+  transition: box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.hero-form:focus-within {
+  border-color: rgba(27, 23, 13, 0.25);
+  box-shadow: 0 1px 0 #fff inset, 0 24px 60px -28px rgba(27, 23, 13, 0.35), 0 0 0 4px rgba(198, 247, 0, 0.5);
+}
+
+/* --- coin stage ---------------------------------------------------------- */
+
+.coin-stage {
+  --px: 0;
+  --py: 0;
+  --sy: 0;
+  pointer-events: none;
+  perspective: 1100px;
+}
+
+.coin-glow {
+  position: absolute;
+  inset: 18% 12%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(198, 247, 0, 0.45), rgba(198, 247, 0, 0));
+  opacity: 0.8;
+}
+
+.coin-layer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    calc(var(--px) * var(--k) * 1px),
+    calc(var(--py) * var(--k) * 1px - var(--sy) * var(--ks) * 1px),
+    0
+  );
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.coin-slot {
+  --size: var(--size-d);
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  transform-style: preserve-3d;
+  transition: transform 1500ms cubic-bezier(0.65, 0, 0.25, 1) calc(var(--t) * 260ms);
+}
+
+.coin-layer-0 { opacity: 0.8; }
+.coin-layer-0 .coin-face { filter: blur(1px) saturate(0.85); }
+
+.coin-stage.is-aligned .coin-slot {
+  transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) scale(var(--ls));
+}
+
+.coin-enter {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: coin-settle 1300ms cubic-bezier(0.16, 1, 0.3, 1) calc(900ms + var(--i) * 90ms) both;
+}
+
+@keyframes coin-settle {
+  from { opacity: 0; transform: translate3d(0, 70px, -120px) scale(0.55) rotate(-18deg); }
+  to { opacity: 1; transform: none; }
+}
+
+.coin-bob {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: coin-bob 7s ease-in-out infinite;
+}
+
+@keyframes coin-bob {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+
+.coin-shadow {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -24%;
+  height: 16%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(27, 23, 13, 0.3), rgba(27, 23, 13, 0));
+  animation: coin-shadow 7s ease-in-out infinite;
+}
+
+@keyframes coin-shadow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.8); opacity: 0.6; }
+}
+
+.coin {
+  --thick: calc(var(--size) * 0.07);
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.coin-spin-wobble { animation: coin-wobble 10s ease-in-out infinite; }
+.coin-spin-flip { animation: coin-flip 12s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+
+@keyframes coin-wobble {
+  0%, 100% { transform: rotateY(-24deg) rotateX(10deg) rotateZ(-4deg); }
+  50% { transform: rotateY(28deg) rotateX(-8deg) rotateZ(5deg); }
+}
+
+@keyframes coin-flip {
+  0%, 40% { transform: rotateY(0deg) rotateX(12deg); }
+  60%, 90% { transform: rotateY(180deg) rotateX(-8deg); }
+  100% { transform: rotateY(360deg) rotateX(12deg); }
+}
+
+/* Stacked discs give the coin a visible metallic edge as it turns. */
+.coin-edge {
+  position: absolute;
+  inset: 1%;
+  border-radius: 50%;
+  transform: translateZ(calc(var(--z) * var(--thick) / 2));
+}
+
+.coin-lime .coin-edge { background: linear-gradient(90deg, #6f8a00, #d9f25c 35%, #8aa800 60%, #e6ff7a 85%, #6f8a00); }
+.coin-ink .coin-edge { background: linear-gradient(90deg, #0b0905, #6b6450 35%, #241f13 60%, #8a8268 85%, #0b0905); }
+
+.coin-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(calc(var(--thick) / 2 + 0.5px));
+}
+
+.coin-face-back {
+  transform: rotateY(180deg) translateZ(calc(var(--thick) / 2 + 0.5px));
+}
+
+.coin-lime .coin-face {
+  background: radial-gradient(circle at 32% 26%, #ecff8c 0%, #c6f700 42%, #a2c800 100%);
+  box-shadow: inset 0 -6px 14px rgba(78, 98, 0, 0.35), inset 0 4px 10px rgba(255, 255, 255, 0.5);
+}
+
+.coin-ink .coin-face {
+  background: radial-gradient(circle at 32% 26%, #3d3624 0%, #1b170d 48%, #0c0a05 100%);
+  box-shadow: inset 0 -6px 14px rgba(0, 0, 0, 0.5), inset 0 4px 10px rgba(255, 255, 255, 0.08);
+}
+
+/* Thin metallic rim. */
+.coin-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 50%;
+  padding: max(2px, calc(var(--size) * 0.035));
+  background: conic-gradient(from 210deg, #fafff0, #9aa58a, #ffffff, #6d7660, #e9f0dc, #8e977f, #fafff0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.coin-ink .coin-face::before {
+  background: conic-gradient(from 210deg, #c9c2a8, #3f3a2b, #e8e2c8, #2a2618, #b0a98c, #4a4433, #c9c2a8);
+}
+
+/* Inner engraved ring. */
+.coin-face::after {
+  content: "";
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  border: 1px solid rgba(27, 23, 13, 0.16);
+}
+
+.coin-ink .coin-face::after { border-color: rgba(198, 247, 0, 0.2); }
+
+.coin-mark {
+  position: relative;
+  width: 60%;
+  height: 60%;
+  user-select: none;
+}
+
+.coin-sheen {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.6) 48%, rgba(255, 255, 255, 0.12) 54%, transparent 62%);
+  mix-blend-mode: soft-light;
+  animation: coin-sheen 6.5s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.8s);
+}
+
+.coin-ink .coin-sheen { mix-blend-mode: screen; opacity: 0.35; }
+
+@keyframes coin-sheen {
+  0%, 55% { transform: translateX(-60%); }
+  85%, 100% { transform: translateX(60%); }
+}
+
+.coin-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.coin-stage.is-packet:not(.is-released) .coin-ping {
+  animation: coin-ping 900ms ease-out calc(var(--t) * 1200ms) both;
+}
+
+@keyframes coin-ping {
+  0% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0.9); }
+  30% { opacity: 1; box-shadow: inset 0 0 0 calc(var(--size) * 0.06) rgba(240, 255, 170, 0.9); }
+  100% { opacity: 0; box-shadow: inset 0 0 0 calc(var(--size) * 0.5) rgba(198, 247, 0, 0); }
+}
+
+/* --- relay line + packet ------------------------------------------------- */
+
+.relay-line {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.relay-line line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1300ms cubic-bezier(0.65, 0, 0.35, 1), opacity 900ms ease;
+}
+
+.relay-line-halo {
+  stroke: rgba(198, 247, 0, 0.6);
+  stroke-width: 16;
+  filter: blur(6px);
+}
+
+.relay-line-core {
+  stroke: #9fc600;
+  stroke-width: 3;
+}
+
+.coin-stage.is-routing .relay-line line { stroke-dashoffset: 0; }
+.coin-stage.is-released .relay-line line { opacity: 0.35; transition-delay: 600ms; }
+
+.relay-packet {
+  position: absolute;
+  z-index: 5;
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f7fbe2;
+  box-shadow: 0 0 0 3px #1b170d, 0 0 22px 6px rgba(198, 247, 0, 0.9);
+  opacity: 0;
+}
+
+.coin-stage.is-packet:not(.is-released) .relay-packet {
+  animation: packet-run 1400ms cubic-bezier(0.55, 0, 0.45, 1) both;
+}
+
+@keyframes packet-run {
+  0% { opacity: 0; transform: translate3d(var(--ax), var(--ay), 0) scale(0.4); }
+  12% { opacity: 1; transform: translate3d(calc(var(--ax) + (var(--bx) - var(--ax)) * 0.12), calc(var(--ay) + (var(--by) - var(--ay)) * 0.12), 0) scale(1); }
+  88% { opacity: 1; transform: translate3d(calc(var(--ax) + (var(--bx) - var(--ax)) * 0.88), calc(var(--ay) + (var(--by) - var(--ay)) * 0.88), 0) scale(1); }
+  100% { opacity: 0; transform: translate3d(var(--bx), var(--by), 0) scale(0.4); }
+}
+
+/* --- pause / mobile / reduced motion ------------------------------------ */
+
+.coin-stage.is-paused,
+.coin-stage.is-paused * {
+  animation-play-state: paused !important;
+}
+
+@media (max-width: 767px) {
+  .coin-desktop-only { display: none; }
+  .coin-slot {
+    --size: var(--size-m);
+  }
+  .coin-layer-0 .coin-face { filter: none; }
+  .hero-light { border-radius: 0 0 1.75rem 1.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-word,
+  .hero-rise,
+  .coin-enter,
+  .coin-bob,
+  .coin-shadow,
+  .coin-sheen,
+  .coin-ping,
+  .relay-packet,
+  .coin-spin-wobble,
+  .coin-spin-flip {
+    animation: none !important;
+  }
+
+  .hero-highlight::before {
+    animation: none !important;
+    transform: skewX(-12deg) scaleX(1);
+  }
+
+  /* Static composition: coins rest on the relay line, angled so the depth reads. */
+  .coin-spin-wobble,
+  .coin-spin-flip { transform: rotateY(-22deg) rotateX(8deg); }
+
+  .coin-stage.is-static .coin-slot,
+  .coin-stage.is-static .relay-line line { transition: none !important; }
+}
