@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { canHoverFx } from "@/lib/motion/magnetic";
+import { bindMagnetic, canHoverFx } from "@/lib/motion/magnetic";
 import { scramble } from "@/lib/motion/scramble";
 import { splitWords } from "@/lib/motion/split-words";
 import { bindTilt } from "@/lib/motion/tilt";
@@ -65,12 +65,152 @@ export default function ScrollEffects() {
               ease: "power3.out",
               stagger: 0.06,
               clearProps: "filter",
-              scrollTrigger: { trigger: h2, start: "top 88%", once: true },
+              scrollTrigger: { trigger: h2, start: "top 88%", once: true, refreshPriority: -1 },
             },
           );
         });
       }, main);
       cleanups.push(() => ctx.revert());
+
+      const mm = gsap.matchMedia();
+      cleanups.push(() => mm.revert());
+
+      // ---- every size --------------------------------------------------
+      mm.add("all", () => {
+        // Section seams: a lime slash sweeps across as each band arrives.
+        const bands = Array.from(main.querySelectorAll<HTMLElement>(":scope > [data-band]")).slice(1);
+        const wipes = bands.map((band) => {
+          const wipe = document.createElement("div");
+          wipe.className = "band-wipe";
+          wipe.setAttribute("aria-hidden", "true");
+          wipe.innerHTML = '<span class="band-wipe-bar"></span>';
+          band.prepend(wipe);
+          gsap.fromTo(
+            wipe.firstElementChild,
+            { xPercent: -130 },
+            { xPercent: 230, ease: "none", scrollTrigger: { trigger: band, start: "top 92%", end: "top 30%", scrub: 0.5, refreshPriority: -1 } },
+          );
+          return wipe;
+        });
+
+        // Final CTA: coins drop and settle into a stack behind the button.
+        const rain = main.querySelector<HTMLElement>(".coin-rain");
+        if (rain) {
+          const drops = Array.from(rain.querySelectorAll<HTMLElement>(".rain-drop"));
+          gsap.fromTo(
+            drops,
+            { y: () => -window.innerHeight * 0.6, opacity: 0, rotation: (i: number) => (i % 2 ? 40 : -50) },
+            {
+              y: 0,
+              opacity: 1,
+              rotation: 0,
+              duration: 1.1,
+              ease: "bounce.out",
+              stagger: 0.14,
+              scrollTrigger: { trigger: rain.closest("section"), start: "top 55%", once: true, refreshPriority: -1 },
+            },
+          );
+        }
+
+        // Magnetic CTAs outside the hero (the hero binds its own).
+        const unbind = canHoverFx()
+          ? Array.from(main.querySelectorAll<HTMLElement>("[data-magnetic]"))
+              .filter((el) => !el.closest(".hero-light"))
+              .map((el) => bindMagnetic(el))
+          : [];
+
+        return () => {
+          wipes.forEach((w) => w.remove());
+          unbind.forEach((fn) => fn());
+        };
+      });
+
+      // ---- desktop only: pinning and horizontal scroll -----------------
+      mm.add("(min-width: 1024px)", () => {
+        // How it works: pin and scrub Shape → Seal → Route.
+        const how = main.querySelector<HTMLElement>("#execution");
+        const howPin = how?.querySelector<HTMLElement>(".how-pin");
+        if (how && howPin) {
+          how.dataset.driver = "pinned";
+          const proxy = { p: 0 };
+          gsap.to(proxy, {
+            p: 1,
+            ease: "none",
+            onUpdate: () => {
+              how.dispatchEvent(new CustomEvent("how:progress", { detail: proxy.p }));
+            },
+            scrollTrigger: {
+              trigger: howPin,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              // Pin under the navbar when it fits; otherwise once its bottom is in view.
+              start: () => (howPin.offsetHeight > window.innerHeight - 68 ? "bottom bottom" : "top 68px"),
+              end: "+=150%",
+              scrub: 0.6,
+            },
+          });
+        }
+
+        // Coin strip: pinned horizontal scroll; each coin flips as it crosses.
+        const strip = main.querySelector<HTMLElement>(".coin-strip");
+        const stripPin = strip?.querySelector<HTMLElement>(".coin-strip-pin");
+        const track = strip?.querySelector<HTMLElement>(".coin-strip-track");
+        const viewport = strip?.querySelector<HTMLElement>(".coin-strip-viewport");
+        if (strip && stripPin && track && viewport) {
+          strip.classList.add("is-scrubbed");
+          const distance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+          const slide = gsap.to(track, {
+            x: () => -distance(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: stripPin,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              start: "top top",
+              end: () => `+=${distance()}`,
+              scrub: 0.6,
+            },
+          });
+          track.querySelectorAll<HTMLElement>(".coin-strip-item").forEach((item) => {
+            const coin = item.querySelector<HTMLElement>(".flip-coin");
+            if (!coin) return;
+            gsap.fromTo(
+              coin,
+              { "--flip": 0 },
+              {
+                "--flip": 1,
+                ease: "none",
+                scrollTrigger: { trigger: item, containerAnimation: slide, start: "left 72%", end: "left 38%", scrub: true },
+              },
+            );
+          });
+        }
+
+        // Status cards: each earlier card settles back as the next one stacks on it.
+        const cards = Array.from(main.querySelectorAll<HTMLElement>(".stack-card"));
+        cards.slice(0, -1).forEach((card, i) => {
+          gsap.fromTo(card, { scale: 1, filter: "brightness(1)" }, {
+            scale: 0.93,
+            filter: "brightness(0.9)",
+            transformOrigin: "50% 0%",
+            ease: "none",
+            scrollTrigger: {
+              trigger: cards[i + 1],
+              start: "top 88%",
+              end: () => `top ${112 + (i + 1) * 24}px`,
+              scrub: true,
+              refreshPriority: -1,
+            },
+          });
+        });
+
+        return () => {
+          if (how) delete how.dataset.driver;
+          strip?.classList.remove("is-scrubbed");
+        };
+      });
 
       // Lenis smooth scroll: desktop fine pointers only.
       if (canHoverFx()) {

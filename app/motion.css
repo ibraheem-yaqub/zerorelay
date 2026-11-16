@@ -135,3 +135,81 @@ html.lenis,
   .rail { display: none !important; }
   .tilt-card { rotate: none !important; }
 }
+
+/* --- section wipes ------------------------------------------------------- */
+
+.band-wipe {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 20;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.band-wipe-bar {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 46%;
+  height: 40px;
+  background: #c6f700;
+  box-shadow: 0 0 0 2px #1b170d, 0 0 40px rgba(198, 247, 0, 0.45);
+  transform: skewX(-15deg);
+  will-change: transform;
+}
+
+/* On lime bands the slash is ink so it still reads. */
+.band-lime > .band-wipe .band-wipe-bar { background: #1b170d; box-shadow: 0 0 0 2px #c6f700; }
+
+/* --- coin strip in scrub mode (desktop) ---------------------------------- */
+
+.coin-strip.is-scrubbed .coin-strip-viewport { overflow: visible; scroll-snap-type: none; }
+.coin-strip.is-scrubbed .flip-coin .coin { transition: none; }
+.coin-strip.is-scrubbed .coin-strip-track { will-change: transform; }
+/* The back of each coin now carries the description; keep the text for screen readers. */
+.coin-strip.is-scrubbed .coin-strip-text p + p {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --- coin rain ----------------------------------------------------------- */
+
+.coin-rain {
+  --rain-size: 72px;
+  position: absolute;
+  right: -70px;
+  bottom: -4px;
+  z-index: 0;
+  width: var(--rain-size);
+  height: 110px;
+  perspective: 600px;
+  pointer-events: none;
+}
+
+.rain-drop {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--i) * 8px);
+  width: var(--rain-size);
+  height: var(--rain-size);
+  transform-style: preserve-3d;
+}
+
+/* Lying flat so the stack reads as a neat pile with visible edges. */
+.rain-coin {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(66deg) rotateZ(var(--rz, 0deg));
+  filter: drop-shadow(0 6px 4px rgba(27, 23, 13, 0.25));
+}
+
+@media (max-width: 639px) {
+  .coin-rain { --rain-size: 52px; right: -62px; }
+  .rain-drop:nth-child(n + 4) { display: none; }
+}

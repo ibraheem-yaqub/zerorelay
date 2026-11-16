@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import {
   ArrowUpRight,
   Fingerprint,
@@ -13,11 +14,16 @@ import LocalStatusStack from "@/components/LocalStatusStack";
 import Marquee from "@/components/Marquee";
 import { BrandCoin } from "@/components/HeroCoins";
 import Navbar from "@/components/Navbar";
+import CoinDisc from "@/components/coins/CoinDisc";
 import PointerGloss from "@/components/coins/PointerGloss";
+import { COIN_CAPTION, type CoinKind } from "@/lib/coin-types";
 import RelayRail from "@/components/motion/RelayRail";
 import ScrollEffects from "@/components/motion/ScrollEffects";
 import ScrollReveal from "@/components/ScrollReveal";
 import SiteFooter from "@/components/SiteFooter";
+
+/** Coins that rain into a stack behind the final CTA (bottom of the stack first). */
+const RAIN: CoinKind[] = ["eth", "usdg", "stock", "swap", "launch"];
 
 const protections = [
   {
@@ -65,7 +71,7 @@ export default function HomePage() {
             <p className="mt-7 max-w-md text-base leading-7 text-[#f7fbe2]/70">
               ZeroRelay is presented as an execution-routing interface, not a live service. No protection rate or inclusion latency is represented as measured performance.
             </p>
-            <Link href="/dashboard" className="btn-lime group mt-9 inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold">
+            <Link href="/dashboard" data-magnetic className="btn-lime group mt-9 inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold">
               Inspect a local payload <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
           </ScrollReveal>
@@ -99,9 +105,21 @@ export default function HomePage() {
                 Inspect the payload <span className="whitespace-nowrap font-serif font-normal italic tracking-[-0.02em]">before integration.</span>
               </h2>
               <p className="mt-6 max-w-lg text-base leading-7 text-[#1B170D]/75">Build a Robinhood Chain intent envelope without signing or sending it.</p>
-              <Link href="/dashboard" className="btn-ink group mt-9 inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold">
-                Open execution terminal <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </Link>
+              <div className="relative mt-9 inline-flex">
+                <div className="coin-rain" aria-hidden="true">
+                  {RAIN.map((kind, i) => (
+                    <span key={kind} className="rain-drop" style={{ "--i": i } as CSSProperties}>
+                      <span className="rain-coin" style={{ "--size": "var(--rain-size)", "--rz": `${(i % 2 ? 1 : -1) * (6 + i * 3)}deg` } as CSSProperties}>
+                        <CoinDisc kind={kind} />
+                      </span>
+                    </span>
+                  ))}
+                </div>
+                <Link href="/dashboard" data-magnetic className="btn-ink group relative z-10 inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold">
+                  Open execution terminal <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </Link>
+              </div>
+              <p className="coin-caption mt-6 text-[#1B170D]/75">{COIN_CAPTION}</p>
             </div>
             <div className="cta-coins relative mx-auto h-56 w-64 shrink-0 sm:h-64 sm:w-80 lg:mx-0" aria-hidden="true">
               <BrandCoin tone="ink" size={150} delay={0} className="absolute left-2 top-4 sm:left-4" />
