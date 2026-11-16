@@ -631,3 +631,6 @@
 
 /* Static composition: the aligned coins occupy the line, so drop the node there. */
 .story.is-static .story-seq { display: none; }
+
+/* Only the coin currently on stage keeps its wobble running. */
+.story-actor:not(.is-live) .coin { animation-play-state: paused; }

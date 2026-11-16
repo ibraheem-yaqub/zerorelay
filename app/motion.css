@@ -213,3 +213,8 @@ html.lenis,
   .coin-rain { --rain-size: 52px; right: -62px; }
   .rain-drop:nth-child(n + 4) { display: none; }
 }
+
+/* Grain is a desktop flourish: skip it on touch / small screens. */
+@media (max-width: 767px), (pointer: coarse) {
+  .grain { display: none; }
+}

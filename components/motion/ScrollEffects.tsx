@@ -52,15 +52,17 @@ export default function ScrollEffects() {
       gsap.registerPlugin(ScrollTrigger);
       const ctx = gsap.context(() => {
         // Headings: word by word, blur to sharp, as each enters view.
+        // Blur is costly to animate on phones; they get the lift + fade only.
+        const blur = window.matchMedia("(min-width: 768px) and (pointer: fine)").matches;
         main.querySelectorAll<HTMLElement>("h2[data-words]").forEach((h2) => {
           const words = splitWords(h2);
           gsap.fromTo(
             words,
-            { opacity: 0, yPercent: 60, filter: "blur(10px)" },
+            { opacity: 0, yPercent: 60, filter: blur ? "blur(10px)" : "none" },
             {
               opacity: 1,
               yPercent: 0,
-              filter: "blur(0px)",
+              filter: blur ? "blur(0px)" : "none",
               duration: 0.9,
               ease: "power3.out",
               stagger: 0.06,

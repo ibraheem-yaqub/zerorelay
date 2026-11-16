@@ -88,15 +88,22 @@ export default function HowItWorks() {
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(route);
 
+    // Only touch the DOM when something actually changed (this runs per scroll frame).
+    let lastP = -1;
+    const lastF: number[] = [];
     const apply = (progress: number) => {
       const p = Math.min(1, Math.max(0, progress));
+      if (Math.abs(p - lastP) < 0.0005) return;
+      lastP = p;
       root.style.setProperty("--p", p.toFixed(4));
       stages.forEach((stage, i) => stage.toggleAttribute("data-lit", p >= Math.min(0.98, i / (stages.length - 1)) - 0.001));
       // Lines type in over the first 92% of progress.
       const typed = (p / 0.92) * lines.length;
       lines.forEach((line, i) => {
-        const f = Math.min(1, Math.max(0, typed - i));
-        line.style.setProperty("--f", f.toFixed(3));
+        const f = Math.round(Math.min(1, Math.max(0, typed - i)) * 1000) / 1000;
+        if (lastF[i] === f) return;
+        lastF[i] = f;
+        line.style.setProperty("--f", `${f}`);
         line.toggleAttribute("data-on", f > 0);
       });
       rows.forEach((row, i) => row.toggleAttribute("data-ready", p >= STATUS[i].at));

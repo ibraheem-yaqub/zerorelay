@@ -101,7 +101,8 @@ export default function HeroStory() {
           const C = { x: A.x + (B.x - A.x) * (lockT / drift), y: A.y };
 
           // 1. drift through the public lane
-          tl.set(actor, { x: A.x, y: A.y, opacity: 0, scale: 0.92 }, t0)
+          tl.call(() => actor.classList.add("is-live"), undefined, t0)
+            .set(actor, { x: A.x, y: A.y, opacity: 0, scale: 0.92 }, t0)
             .set(seal, { strokeDashoffset: 1 }, t0)
             .set(sealSvg, { opacity: 0, scale: 1.5 }, t0)
             .to(actor, { opacity: 1, duration: 0.45, ease: "power1.out" }, t0)
@@ -146,7 +147,8 @@ export default function HeroStory() {
           // 5. ride the line to the sequencer and hand off
           tl.to(actor, { x: S.x, y: S.y, duration: 1.5, ease: "power2.inOut" }, t0 + drift + 0.55)
             .fromTo(seqPulse, { scale: 0.6, opacity: 0.9 }, { scale: 2.4, opacity: 0, duration: 0.9, ease: "power2.out" }, t0 + drift + 2.0)
-            .to(actor, { scale: 0.35, opacity: 0, duration: 0.4, ease: "power2.in" }, t0 + drift + 2.0);
+            .to(actor, { scale: 0.35, opacity: 0, duration: 0.4, ease: "power2.in" }, t0 + drift + 2.0)
+            .call(() => actor.classList.remove("is-live"), undefined, t0 + drift + 2.45);
         });
 
         // Pad so the loop period is exactly coins × gap (the last tail overlaps the first entry).
