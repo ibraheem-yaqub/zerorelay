@@ -1,0 +1,131 @@
+/* ==========================================================================
+   Asset / intent coins — extends the base .coin rig in hero.css with a cream
+   material, typographic face art, and a pointer-driven gloss (--gx / --gy).
+   ========================================================================== */
+
+/* --- cream material (ink art) ------------------------------------------- */
+
+.coin-cream .coin-edge {
+  background: linear-gradient(90deg, #7d7558, #f4efda 35%, #a9a184 60%, #fffbea 85%, #7d7558);
+}
+
+.coin-cream .coin-face {
+  background: radial-gradient(circle at 32% 26%, #ffffff 0%, #f7f2df 44%, #dcd4b4 100%);
+  box-shadow: inset 0 -6px 14px rgba(92, 82, 48, 0.3), inset 0 4px 10px rgba(255, 255, 255, 0.9);
+}
+
+.coin-cream .coin-face::before {
+  background: conic-gradient(from 210deg, #ffffff, #a59c7d, #fffdf2, #7f775c, #efe8cf, #9b9274, #ffffff);
+}
+
+.coin-cream .coin-face::after { border-color: rgba(27, 23, 13, 0.18); }
+
+/* --- face art ------------------------------------------------------------ */
+
+.coin-art {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--size) * 0.035);
+  color: #1b170d;
+  user-select: none;
+}
+
+.coin-ink .coin-art { color: #c6f700; }
+
+.coin-glyph {
+  width: calc(var(--size) * 0.34);
+  height: calc(var(--size) * 0.34);
+  /* Stroke stays crisp relative to coin size. */
+  stroke-width: 1.8;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
+}
+
+.coin-ink .coin-glyph { filter: drop-shadow(0 0 calc(var(--size) * 0.03) rgba(198, 247, 0, 0.35)); }
+
+.coin-label {
+  font-family: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: calc(var(--size) * 0.125);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  /* Engraved feel: light catch below on light coins, dark below on ink. */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.coin-label-long {
+  font-size: calc(var(--size) * 0.095);
+  letter-spacing: 0.06em;
+}
+
+.coin-ink .coin-label { text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6); }
+
+/* Description on the reverse (flip strip). */
+.coin-desc {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--size) * 0.04);
+  padding: 0 17%;
+  text-align: center;
+  color: #1b170d;
+}
+
+.coin-ink .coin-desc { color: #f7fbe2; }
+
+.coin-desc-label {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: max(10px, calc(var(--size) * 0.05));
+  letter-spacing: 0.18em;
+  color: #4f6400;
+}
+
+.coin-ink .coin-desc-label { color: #c6f700; }
+
+.coin-desc-text {
+  font-size: max(12px, calc(var(--size) * 0.062));
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* --- pointer gloss ------------------------------------------------------- */
+
+.coin-gloss {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at calc(12% + var(--gx, 0.3) * 76%) calc(10% + var(--gy, 0.25) * 76%),
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.12) 26%,
+    transparent 48%
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* Mirror horizontally on the back so the light reads from the same side. */
+.coin-gloss-back {
+  background: radial-gradient(
+    circle at calc(88% - var(--gx, 0.3) * 76%) calc(10% + var(--gy, 0.25) * 76%),
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.12) 26%,
+    transparent 48%
+  );
+}
+
+.coin-ink .coin-gloss { mix-blend-mode: screen; opacity: 0.4; }
+
+/* --- caption ------------------------------------------------------------- */
+
+.coin-caption {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}

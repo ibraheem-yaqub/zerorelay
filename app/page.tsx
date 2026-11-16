@@ -10,6 +10,7 @@ import ExecutionRoute from "@/components/ExecutionRoute";
 import Hero from "@/components/Hero";
 import { BrandCoin } from "@/components/HeroCoins";
 import Navbar from "@/components/Navbar";
+import PointerGloss from "@/components/coins/PointerGloss";
 import ScrollReveal from "@/components/ScrollReveal";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -34,6 +35,7 @@ const protections = [
 export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] text-zinc-100">
+      <PointerGloss />
       <Navbar />
       <Hero />
       <ChainTelemetry variant="feature" />

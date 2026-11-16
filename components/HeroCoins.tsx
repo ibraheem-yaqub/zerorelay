@@ -1,17 +1,19 @@
 "use client";
 
 import { CSSProperties, useEffect, useRef } from "react";
+import CoinDisc, { EDGE_LAYERS } from "@/components/coins/CoinDisc";
+import type { CoinKind } from "@/lib/coin-types";
 
 /**
- * Decorative brand art for the home hero: ZeroRelay-mark coins floating at three
+ * Decorative brand art for the home hero: asset / intent coins floating at three
  * depths, with a one-time "relay" moment where a lime line draws through the
  * stage and the coins line up along it. Purely visual — no data, prices or
  * balances are shown, and the whole layer is hidden from assistive tech.
  */
 
 type Coin = {
+  kind: CoinKind; // asset / intent type shown on the face
   layer: 0 | 1 | 2; // 0 = far, 2 = near
-  tone: "lime" | "ink";
   size: number; // px at desktop scale
   fx: number; // floating position, % of stage width
   fy: number; // floating position, % of stage height
@@ -23,14 +25,14 @@ type Coin = {
 };
 
 const COINS: Coin[] = [
-  { layer: 0, tone: "ink", size: 58, fx: 20, fy: 16, t: 0.14, spin: "wobble", dur: 11, bob: 7.5 },
-  { layer: 0, tone: "lime", size: 52, fx: 88, fy: 82, t: 0.84, spin: "flip", dur: 16, bob: 8.2 },
-  { layer: 0, tone: "lime", size: 46, fx: 12, fy: 70, t: 0.93, spin: "wobble", dur: 13, bob: 6.8 },
-  { layer: 1, tone: "lime", size: 92, fx: 74, fy: 14, t: 0.24, spin: "flip", dur: 12, bob: 6.4, mobile: true },
-  { layer: 1, tone: "ink", size: 84, fx: 30, fy: 46, t: 0.47, spin: "wobble", dur: 9.5, bob: 7.1 },
-  { layer: 1, tone: "ink", size: 78, fx: 86, fy: 54, t: 0.59, spin: "flip", dur: 14, bob: 5.9, mobile: true },
-  { layer: 2, tone: "ink", size: 132, fx: 46, fy: 24, t: 0.35, spin: "wobble", dur: 10.5, bob: 6.6, mobile: true },
-  { layer: 2, tone: "lime", size: 150, fx: 58, fy: 74, t: 0.72, spin: "flip", dur: 13.5, bob: 7.4, mobile: true },
+  { kind: "bridged", layer: 0, size: 58, fx: 20, fy: 16, t: 0.14, spin: "wobble", dur: 11, bob: 7.5 },
+  { kind: "new", layer: 0, size: 52, fx: 88, fy: 82, t: 0.84, spin: "flip", dur: 16, bob: 8.2 },
+  { kind: "asset", layer: 0, size: 46, fx: 12, fy: 70, t: 0.93, spin: "wobble", dur: 13, bob: 6.8 },
+  { kind: "usdg", layer: 1, size: 92, fx: 74, fy: 14, t: 0.24, spin: "flip", dur: 12, bob: 6.4, mobile: true },
+  { kind: "stock", layer: 1, size: 84, fx: 30, fy: 46, t: 0.47, spin: "wobble", dur: 9.5, bob: 7.1 },
+  { kind: "launch", layer: 1, size: 78, fx: 86, fy: 54, t: 0.59, spin: "flip", dur: 14, bob: 5.9, mobile: true },
+  { kind: "eth", layer: 2, size: 132, fx: 46, fy: 24, t: 0.35, spin: "wobble", dur: 10.5, bob: 6.6, mobile: true },
+  { kind: "swap", layer: 2, size: 150, fx: 58, fy: 74, t: 0.72, spin: "flip", dur: 13.5, bob: 7.4, mobile: true },
 ];
 
 // Uniform-ish scale coins take when they settle on the line, so the row reads as one route.
@@ -43,7 +45,6 @@ const DEPTH = [
 ];
 // The logo's slash leans 15° from vertical (top to the right).
 const SLASH = Math.tan((15 * Math.PI) / 180);
-const EDGE_LAYERS = 6;
 
 export default function HeroCoins({ className = "" }: { className?: string }) {
   const stageRef = useRef<HTMLDivElement>(null);
@@ -219,20 +220,11 @@ export default function HeroCoins({ className = "" }: { className?: string }) {
                 <div className="coin-shadow" style={{ animationDuration: `${coin.bob}s`, animationDelay: `${-i * 1.3}s` }} />
                 <div className="coin-enter">
                   <div className="coin-bob" style={{ animationDuration: `${coin.bob}s`, animationDelay: `${-i * 1.3}s` }}>
-                    <div
-                      className={`coin coin-${coin.tone} coin-spin-${coin.spin}`}
+                    <CoinDisc
+                      kind={coin.kind}
+                      spin={coin.spin}
                       style={{ animationDuration: `${coin.dur}s`, animationDelay: `${-i * 2.1}s` }}
-                    >
-                      {Array.from({ length: EDGE_LAYERS }, (_, e) => (
-                        <span
-                          key={e}
-                          className="coin-edge"
-                          style={{ "--z": (e / (EDGE_LAYERS - 1) - 0.5) * 2 } as CSSProperties}
-                        />
-                      ))}
-                      <CoinFace tone={coin.tone} />
-                      <CoinFace tone={coin.tone} back />
-                    </div>
+                    />
                   </div>
                 </div>
               </div>
@@ -246,7 +238,7 @@ export default function HeroCoins({ className = "" }: { className?: string }) {
   );
 }
 
-function CoinFace({ tone, back = false }: { tone: Coin["tone"]; back?: boolean }) {
+function CoinFace({ tone, back = false }: { tone: BrandTone; back?: boolean }) {
   return (
     <div className={`coin-face ${back ? "coin-face-back" : ""}`}>
       {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG, no optimisation needed */}
@@ -257,6 +249,8 @@ function CoinFace({ tone, back = false }: { tone: Coin["tone"]; back?: boolean }
   );
 }
 
+type BrandTone = "lime" | "ink";
+
 /** A single standalone brand coin (same styles as the hero coins) for accent art elsewhere. */
 export function BrandCoin({
   tone,
@@ -265,7 +259,7 @@ export function BrandCoin({
   delay = 0,
   className = "",
 }: {
-  tone: Coin["tone"];
+  tone: BrandTone;
   size: number;
   spin?: Coin["spin"];
   delay?: number;

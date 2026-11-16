@@ -6,6 +6,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Check, CircleAlert, Search, Shield
 import { ADDRESS_PATTERN } from "@/lib/robinhood-chain";
 import ChainMark from "@/components/ChainMark";
 import HeroCoins from "@/components/HeroCoins";
+import { COIN_CAPTION } from "@/lib/coin-types";
 
 const LEAD_WORDS = ["Protecting", "every", "swap", "on"];
 const ACCENT_WORDS = ["Robinhood", "Chain."];
@@ -127,6 +128,9 @@ export default function Hero() {
         </div>
 
         <HeroCoins className="relative -mx-5 mt-6 h-[360px] sm:-mx-8 sm:h-[440px] lg:absolute lg:inset-y-[-6rem] lg:left-[46%] lg:right-[-4rem] lg:mx-0 lg:mt-0 lg:h-auto" />
+        <p className="coin-caption relative z-10 -mt-2 text-center text-[#1B170D]/70 lg:absolute lg:bottom-[-3.5rem] lg:right-0 lg:mt-0 lg:text-right">
+          {COIN_CAPTION}
+        </p>
       </div>
     </section>
   );
