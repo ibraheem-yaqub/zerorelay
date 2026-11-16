@@ -92,115 +92,6 @@
   color: rgba(247, 251, 226, 0.85);
 }
 
-/* --- Execution model: scroll-drawn relay route --------------------------- */
-
-.exec-track {
-  position: absolute;
-  z-index: 0;
-  border-radius: 2px;
-  background: rgba(247, 251, 226, 0.1);
-}
-
-.exec-track[data-axis="x"] { height: 2px; translate: 0 -1px; }
-.exec-track[data-axis="y"] { width: 2px; translate: -1px 0; }
-
-.exec-track-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: #c6f700;
-  box-shadow: 0 0 14px rgba(198, 247, 0, 0.7);
-  transform-origin: 0 0;
-}
-
-.exec-track[data-axis="x"] .exec-track-fill { transform: scaleX(var(--p)); }
-.exec-track[data-axis="y"] .exec-track-fill { transform: scaleY(var(--p)); }
-
-/* The packet riding the head of the line. */
-.exec-track-head {
-  position: absolute;
-  left: -6px;
-  top: -6px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #f7fbe2;
-  box-shadow: 0 0 0 3px #1b170d, 0 0 20px 5px rgba(198, 247, 0, 0.85);
-  opacity: calc(min(var(--p) * 20, 1) * min((1 - var(--p)) * 20, 1));
-}
-
-.exec-track[data-axis="x"] .exec-track-head { transform: translateX(calc(var(--p) * var(--len))); top: -6px; }
-.exec-track[data-axis="y"] .exec-track-head { transform: translateY(calc(var(--p) * var(--len))); left: -6px; }
-
-.exec-stage { z-index: 1; }
-
-.exec-node {
-  z-index: 1;
-  border: 1px solid rgba(247, 251, 226, 0.14);
-  background: #12100a;
-  color: rgba(247, 251, 226, 0.55);
-  transition: background-color 500ms ease, color 500ms ease, border-color 500ms ease, box-shadow 500ms ease;
-}
-
-.exec-stage[data-lit] .exec-node {
-  border-color: #c6f700;
-  background: #c6f700;
-  color: #1b170d;
-  box-shadow: 0 0 0 6px rgba(198, 247, 0, 0.12), 0 0 36px rgba(198, 247, 0, 0.45);
-}
-
-.exec-card {
-  border: 1px solid rgba(247, 251, 226, 0.07);
-  background: linear-gradient(160deg, rgba(247, 251, 226, 0.05), rgba(247, 251, 226, 0.01) 60%);
-  opacity: 0.55;
-  translate: 0 8px;
-  transition:
-    opacity 600ms ease,
-    translate 600ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    border-color 400ms ease,
-    box-shadow 400ms ease;
-}
-
-.exec-stage[data-lit] .exec-card {
-  opacity: 1;
-  translate: 0 0;
-  border-color: rgba(198, 247, 0, 0.22);
-}
-
-.exec-stage[data-lit] .exec-card:hover {
-  translate: 0 -6px;
-  border-color: rgba(198, 247, 0, 0.45);
-  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.9), 0 0 40px -8px rgba(198, 247, 0, 0.22);
-}
-
-/* --- Security: full-height highlighter that draws in on reveal ------------ */
-
-/* Block version of .hero-highlight (app/hero.css): covers the full x-height, ink text. */
-.highlight-block {
-  color: #1b170d;
-  padding-inline: 0.12em 0.2em;
-}
-
-.highlight-block::before {
-  bottom: 0.04em;
-  height: 0.98em;
-  border-radius: 0.14em 0.3em 0.2em 0.34em;
-}
-
-/* Default (no JS / already visible): fully drawn. Before reveal: undrawn, light text. */
-.reveal-highlight::before {
-  animation: none;
-  transform: skewX(-12deg) scaleX(1);
-  transition: transform 850ms cubic-bezier(0.65, 0, 0.35, 1) 350ms;
-}
-
-.reveal-highlight {
-  transition: color 400ms ease 650ms;
-}
-
-.reveal-ready:not(.is-visible) .reveal-highlight { color: #f7fbe2; transition: none; }
-.reveal-ready:not(.is-visible) .reveal-highlight::before { transform: skewX(-12deg) scaleX(0); transition: none; }
-
 /* --- Terminal CTA: lime bookend to the hero ------------------------------ */
 
 .cta-panel {
@@ -237,7 +128,351 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .network-card:hover,
-  .exec-stage[data-lit] .exec-card:hover { translate: none; }
-  .exec-card { translate: none; }
+  .network-card:hover { translate: none; }
 }
+
+/* ==========================================================================
+   Bands, type scale, and the sections added in the 2026-11 upgrade
+   ========================================================================== */
+
+/* --- type ---------------------------------------------------------------- */
+
+.display-xl {
+  font-size: clamp(2.6rem, 6.4vw, 6rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.058em;
+}
+
+.eyebrow {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+}
+
+/* Coral is reserved for exposed / bots / not-connected. #e2512f passes AA only on
+   ink; on light surfaces small coral text uses the deeper #b5401f (about 5.7:1 on white). */
+.text-coral-ink { color: #b5401f; }
+
+.status-dot-coral {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e2512f;
+  box-shadow: 0 0 0 3px rgba(226, 81, 47, 0.18);
+}
+
+.status-pill {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(27, 23, 13, 0.14);
+  background: #fff;
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(27, 23, 13, 0.8);
+}
+
+/* --- full-bleed bands ---------------------------------------------------- */
+
+.band { position: relative; }
+
+.band-ink { background: #1b170d; color: #f7fbe2; }
+
+.band-white {
+  color-scheme: light;
+  background: #ffffff;
+  color: #1b170d;
+  border-radius: 2.5rem;
+}
+
+.band-lime {
+  color-scheme: light;
+  background: #c6f700;
+  color: #1b170d;
+  border-radius: 2.5rem;
+}
+
+.band-white :focus-visible,
+.band-lime :focus-visible { outline-color: #1b170d; }
+
+.band-white ::selection,
+.band-lime ::selection { background: #1b170d; color: #c6f700; }
+
+/* Network band is full-bleed now; keep the glow + grid but drop the panel chrome. */
+.network-band { box-shadow: none; }
+
+/* Painted highlighter for headings below the fold. A background (not ::before) so
+   it follows every wrapped line; paints when its ScrollReveal enters view. */
+.paint-hl {
+  display: inline;
+  color: #1b170d;
+  padding-inline: 0.1em 0.16em;
+  background-image: linear-gradient(100deg, rgba(198, 247, 0, 0.9), #c6f700 40%, #d6ff1a);
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% 0.42em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 900ms cubic-bezier(0.65, 0, 0.35, 1) 350ms, color 400ms ease 650ms;
+}
+
+/* Full-height version for ink bands, where the ink text needs the lime behind it. */
+.paint-hl-block {
+  background-position: 0 55%;
+  background-size: 100% 0.98em;
+  border-radius: 0.14em;
+}
+
+.reveal-ready:not(.is-visible) .paint-hl { background-size: 0% 0.42em; transition: none; }
+.reveal-ready:not(.is-visible) .paint-hl-block { background-size: 0% 0.98em; color: #f7fbe2; }
+
+.display-lg {
+  font-size: clamp(2.4rem, 4.8vw, 4.6rem);
+  font-weight: 600;
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+}
+
+/* --- marquee ------------------------------------------------------------- */
+
+.marquee-wrap {
+  margin-block: -1.25rem;
+  padding-block: 1.25rem;
+  overflow: hidden;
+}
+
+.marquee {
+  transform: rotate(-2deg) scale(1.04);
+  background: #c6f700;
+  color: #1b170d;
+  border-block: 2px solid #1b170d;
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+.marquee-inner {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee-row { display: flex; flex-shrink: 0; }
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.1rem 0 1.1rem 1.5rem;
+  font-size: clamp(1.1rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.marquee-sep { font-family: var(--font-instrument-serif), serif; font-style: italic; font-weight: 400; color: #4f6400; }
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* --- How it works -------------------------------------------------------- */
+
+.how-track {
+  position: absolute;
+  z-index: 0;
+  width: 2px;
+  translate: -1px 0;
+  border-radius: 2px;
+  background: rgba(27, 23, 13, 0.12);
+}
+
+.how-track-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #c6f700;
+  box-shadow: 0 0 0 1px rgba(79, 100, 0, 0.35), 0 0 14px rgba(198, 247, 0, 0.8);
+  transform: scaleY(var(--p));
+  transform-origin: 0 0;
+}
+
+/* Coin riding the head of the track. */
+.how-rider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  transform: translateY(calc(var(--p) * var(--len, 0px)));
+}
+
+.how-rider-coin {
+  position: absolute;
+  inset: 0;
+  perspective: 400px;
+}
+
+.how-rider-coin .coin { transform: rotateY(calc(var(--p) * 540deg)) rotateX(10deg); }
+
+/* Lime seal ring that closes once the payload is sealed (stage 2). */
+.how-seal {
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid #c6f700;
+  box-shadow: 0 0 0 1px rgba(79, 100, 0, 0.4), 0 0 18px rgba(198, 247, 0, 0.8);
+  opacity: 0;
+  scale: 1.6;
+  transition: opacity 400ms ease, scale 500ms cubic-bezier(0.2, 0.7, 0.2, 1.4);
+}
+
+.how:has(.how-stage:nth-child(2)[data-lit]) .how-seal { opacity: 1; scale: 1; }
+
+.how-node {
+  z-index: 1;
+  border: 1px solid rgba(27, 23, 13, 0.14);
+  background: #fff;
+  color: rgba(27, 23, 13, 0.6);
+  transition: background-color 500ms ease, color 500ms ease, border-color 500ms ease, box-shadow 500ms ease;
+}
+
+.how-stage[data-lit] .how-node {
+  border-color: #1b170d;
+  background: #1b170d;
+  color: #c6f700;
+  box-shadow: 0 0 0 6px rgba(198, 247, 0, 0.35);
+}
+
+.how-card {
+  border: 1px solid rgba(27, 23, 13, 0.1);
+  background: #f7f8f2;
+  opacity: 0.6;
+  transition: opacity 600ms ease, border-color 400ms ease, background-color 400ms ease, box-shadow 400ms ease;
+}
+
+.how-stage[data-lit] .how-card {
+  opacity: 1;
+  border-color: rgba(27, 23, 13, 0.16);
+  background: #fff;
+  box-shadow: 0 24px 50px -30px rgba(27, 23, 13, 0.35);
+}
+
+.how-terminal {
+  background: #1b170d;
+  color: #f7fbe2;
+  box-shadow: 0 40px 80px -40px rgba(27, 23, 13, 0.6), 0 0 0 1px rgba(27, 23, 13, 0.9);
+}
+
+.how-json { min-height: 22rem; color: rgba(247, 251, 226, 0.75); }
+
+/* Each line "types" in: --f runs 0 to 1 and clips from the right. */
+.json-line {
+  --f: 0;
+  display: block;
+  white-space: pre;
+  clip-path: inset(0 calc((1 - var(--f)) * 100%) 0 0);
+}
+
+.json-key { color: #f7fbe2; }
+.json-str { color: #c6f700; }
+.json-lit { color: #e3f58c; }
+
+.how-status-value { font-weight: 600; }
+.how-status-waiting { color: rgba(247, 251, 226, 0.65); }
+.how-status-ready { display: none; color: #c6f700; }
+.how-status[data-ready] .how-status-waiting { display: none; }
+.how-status[data-ready] .how-status-ready { display: inline; }
+
+/* --- coin strip ---------------------------------------------------------- */
+
+.coin-strip { --strip-size: 190px; }
+
+.coin-strip-track { width: max-content; padding-bottom: 0.5rem; }
+
+/* Without the scroll layer (or on mobile) the strip is a native swipe row. */
+.coin-strip-viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.coin-strip-viewport::-webkit-scrollbar { display: none; }
+.coin-strip-item { scroll-snap-align: start; width: max(var(--strip-size), 15rem); }
+
+.flip-coin {
+  position: relative;
+  width: var(--strip-size);
+  height: var(--strip-size);
+  perspective: 900px;
+  filter: drop-shadow(0 26px 22px rgba(27, 23, 13, 0.28));
+}
+
+.flip-coin .coin {
+  transform: rotateY(calc(var(--flip, 0) * 180deg)) rotateX(8deg);
+  transition: transform 900ms cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .coin-strip-item:hover .flip-coin { --flip: 1; }
+}
+
+@media (min-width: 1024px) {
+  .coin-strip { --strip-size: 230px; }
+}
+
+/* --- stacked status cards ------------------------------------------------ */
+
+.stack-card {
+  border: 1px solid rgba(27, 23, 13, 0.12);
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.4) inset, 0 30px 60px -36px rgba(27, 23, 13, 0.55);
+}
+
+@media (min-width: 1024px) {
+  .stack-cards { gap: 14vh; padding-bottom: 6vh; }
+  .stack-card {
+    position: sticky;
+    top: calc(7rem + var(--i) * 1.5rem);
+    min-height: 22rem;
+  }
+}
+
+.stack-card-lime { background: #c6f700; color: #1b170d; }
+.stack-card-ink { background: #1b170d; color: #f7fbe2; border-color: #1b170d; }
+.stack-card-cream { background: #f7f2df; color: #1b170d; }
+
+.stack-tag {
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.stack-tag-lime { background: #1b170d; color: #c6f700; }
+.stack-tag-ink { background: #e2512f; color: #1b170d; }
+.stack-tag-cream { border: 1px dashed rgba(27, 23, 13, 0.5); color: #1b170d; }
+
+.stack-card-lime .stack-bullet,
+.stack-card-cream .stack-bullet { background: #1b170d; }
+.stack-card-ink .stack-bullet { background: #e2512f; }
+
+@media (max-width: 767px) {
+  .band-white,
+  .band-lime { border-radius: 1.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-inner { animation: none; }
+  .paint-hl { transition: none; }
+  .flip-coin .coin { transition: none; }
+}
+
+.stack-num { color: rgba(27, 23, 13, 0.75); }
+.stack-card-ink .stack-num { color: rgba(247, 251, 226, 0.75); }

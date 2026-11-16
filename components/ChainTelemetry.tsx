@@ -93,20 +93,20 @@ export default function ChainTelemetry({ variant = "default" }: ChainTelemetryPr
 
 function FeatureTelemetry() {
   return (
-    <section id="network" aria-labelledby="telemetry-title" className="relative scroll-mt-24 px-3 pt-6 sm:px-5 sm:pt-8">
-      <div className="network-band relative isolate mx-auto max-w-[88rem] overflow-hidden rounded-[2.5rem] px-5 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+    <section id="network" data-band="ink" aria-labelledby="telemetry-title" className="band band-ink relative scroll-mt-24">
+      <div className="network-band relative isolate overflow-hidden px-5 py-24 sm:px-8 sm:py-32">
         <div className="network-band-grid pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
         <div className="mx-auto max-w-6xl">
           <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 sm:mb-14 md:flex-row md:items-end">
             <div>
-              <p className="font-mono text-[10px] tracking-[0.22em] text-[#C6F700]">NETWORK PROFILE / 01</p>
-              <h2 id="telemetry-title" className="mt-5 flex items-center gap-4 text-4xl font-semibold tracking-[-0.05em] text-[#f7fbe2] sm:text-5xl lg:text-6xl">
+              <p className="eyebrow text-[#C6F700]">NETWORK PROFILE / 01</p>
+              <h2 id="telemetry-title" className="display-xl mt-5 flex items-center gap-4 text-[#f7fbe2]">
                 <ChainMark chain="robinhood" className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
                 Robinhood Chain L2
               </h2>
             </div>
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#C6F700]/20 bg-[#C6F700]/[0.06] px-3.5 py-2 font-mono text-[10px] tracking-[0.08em] text-[#f7fbe2]/75">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#f7fbe2]/35" aria-hidden="true" />
+              <span className="status-dot-coral" aria-hidden="true" />
               MAINNET CONFIGURATION · NOT CONNECTED
             </span>
           </ScrollReveal>
@@ -116,9 +116,9 @@ function FeatureTelemetry() {
               const Icon = metric.icon;
               const isTarget = "target" in metric && metric.target;
               return (
-                <article key={metric.label} className="network-card stagger-item group relative flex flex-col overflow-hidden rounded-3xl p-6 sm:p-7">
+                <article key={metric.label} className="network-card tilt-card stagger-item group relative flex flex-col overflow-hidden rounded-3xl p-6 sm:p-7">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[9px] tracking-[0.16em] text-[#f7fbe2]/50">{metric.label}</span>
+                    <span className="font-mono text-[10px] tracking-[0.16em] text-[#f7fbe2]/70">{metric.label}</span>
                     <span className="network-card-icon flex h-9 w-9 items-center justify-center rounded-xl">
                       <Icon size={16} strokeWidth={1.7} />
                     </span>
@@ -129,9 +129,9 @@ function FeatureTelemetry() {
                   {isTarget ? (
                     <p className="network-target mb-8 mt-4 w-fit rounded-lg px-2.5 py-1.5 text-[11px] leading-4">{metric.detail}</p>
                   ) : (
-                    <p className="mb-8 mt-4 text-[12px] leading-5 text-[#f7fbe2]/55">{metric.detail}</p>
+                    <p className="mb-8 mt-4 text-[13px] leading-5 text-[#f7fbe2]/70">{metric.detail}</p>
                   )}
-                  <div className="mt-auto flex items-center justify-between border-t border-[#f7fbe2]/[0.08] pt-4 font-mono text-[9px] tracking-[0.08em] text-[#f7fbe2]/40">
+                  <div className="mt-auto flex items-center justify-between border-t border-[#f7fbe2]/[0.08] pt-4 font-mono text-[10px] tracking-[0.08em] text-[#f7fbe2]/60">
                     <span>{ROBINHOOD_CHAIN.chainIdHex}</span>
                     <span>PREVIEW DATA</span>
                   </div>

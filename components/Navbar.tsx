@@ -41,7 +41,7 @@ export default function Navbar() {
 
         <nav aria-label="Main navigation" className="hidden items-center gap-7 lg:flex">
           {links.map((link) => (
-            <a key={link.label} href={link.href} className="text-[11px] text-zinc-500 transition hover:text-[#C6F700]">
+            <a key={link.label} href={link.href} className="text-[11px] text-zinc-400 transition hover:text-[#C6F700]">
               {link.label}
             </a>
           ))}
@@ -49,7 +49,7 @@ export default function Navbar() {
             href={xProfileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-[#C6F700]"
+            className="inline-flex items-center gap-1.5 text-[11px] text-zinc-400 transition hover:text-[#C6F700]"
           >
             <XIcon />
             Follow on X

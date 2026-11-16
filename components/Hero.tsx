@@ -55,7 +55,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="hero-rise mt-7 max-w-xl text-base leading-7 text-[#1B170D]/65 sm:text-lg sm:leading-8" style={rise(700)}>
+          <p className="hero-rise mt-7 max-w-xl text-base leading-7 text-[#1B170D]/75 sm:text-lg sm:leading-8" style={rise(700)}>
             A private execution layer for swaps, token launches, and tokenized assets. Shape a transaction intent before it reaches a signer.
           </p>
 
@@ -64,7 +64,7 @@ export default function Hero() {
               <ShieldCheck size={13} className="text-[#6f8c00]" />
               Designed to reduce public-mempool exposure
             </span>
-            <span className="font-mono text-[9px] tracking-[0.08em] text-[#1B170D]/45">LOCAL PREVIEW · RPC NOT CONNECTED</span>
+            <span className="font-mono text-[10px] tracking-[0.08em] text-[#1B170D]/75">LOCAL PREVIEW · <span className="text-coral-ink">RPC NOT CONNECTED</span></span>
           </div>
 
           <form
@@ -75,7 +75,7 @@ export default function Hero() {
             <label htmlFor="route-address" className="sr-only">Robinhood Chain wallet or contract address</label>
             <div className="flex flex-col gap-2 sm:flex-row">
               <div className="flex min-w-0 flex-1 items-center gap-3 px-3">
-                <Search size={16} className="shrink-0 text-[#1B170D]/40" />
+                <Search size={16} className="shrink-0 text-[#1B170D]/55" />
                 <input
                   id="route-address"
                   autoComplete="off"
@@ -86,14 +86,14 @@ export default function Hero() {
                     setResult("idle");
                   }}
                   placeholder="Paste a wallet or contract address"
-                  className="h-12 min-w-0 flex-1 bg-transparent font-mono text-[12px] text-[#1B170D] outline-none placeholder:font-sans placeholder:text-sm placeholder:text-[#1B170D]/40"
+                  className="h-12 min-w-0 flex-1 bg-transparent font-mono text-[12px] text-[#1B170D] outline-none placeholder:font-sans placeholder:text-sm placeholder:text-[#1B170D]/55"
                 />
               </div>
               <button type="submit" className="btn-ink group inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold">
                 Inspect route <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </button>
             </div>
-            <p aria-live="polite" className={`min-h-4 px-3 pt-2 text-[11px] ${result === "invalid" ? "text-rose-600" : result === "valid" ? "text-[#4f6400]" : "text-[#1B170D]/45"}`}>
+            <p aria-live="polite" className={`min-h-4 px-3 pt-2 text-[11px] ${result === "invalid" ? "text-coral-ink" : result === "valid" ? "text-[#4f6400]" : "text-[#1B170D]/65"}`}>
               {result === "invalid" ? (
                 <span className="inline-flex items-center gap-1.5"><CircleAlert size={12} /> Enter a valid 20-byte EVM address.</span>
               ) : result === "valid" ? (
@@ -113,15 +113,15 @@ export default function Hero() {
 
           <div className="hero-rise mt-12 grid w-full max-w-xl grid-cols-3 border-y border-[#1B170D]/10 py-5 sm:mt-14" style={rise(1020)}>
             <div className="pr-3 sm:pr-6">
-              <p className="font-mono text-[9px] tracking-[0.16em] text-[#1B170D]/45">NETWORK</p>
+              <p className="font-mono text-[10px] tracking-[0.16em] text-[#1B170D]/70">NETWORK</p>
               <p className="mt-2 text-sm font-medium">Robinhood Chain</p>
             </div>
             <div className="border-x border-[#1B170D]/10 px-3 sm:px-6">
-              <p className="font-mono text-[9px] tracking-[0.16em] text-[#1B170D]/45">CHAIN ID</p>
+              <p className="font-mono text-[10px] tracking-[0.16em] text-[#1B170D]/70">CHAIN ID</p>
               <p className="mt-2 whitespace-nowrap font-mono text-[11px] sm:text-sm"><span className="hero-chip-lime">4663 · 0x1237</span></p>
             </div>
             <div className="pl-3 sm:pl-6">
-              <p className="font-mono text-[9px] tracking-[0.16em] text-[#1B170D]/45">NATIVE GAS</p>
+              <p className="font-mono text-[10px] tracking-[0.16em] text-[#1B170D]/70">NATIVE GAS</p>
               <p className="mt-2 text-sm font-medium">ETH</p>
             </div>
           </div>
