@@ -38,7 +38,7 @@ export default function LocalStatusStack() {
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
         <ScrollReveal className="lg:sticky lg:top-28 lg:self-start">
           <p className="eyebrow text-[#4f6400]">STATUS / 04</p>
-          <h2 className="display-lg mt-5">
+          <h2 data-words className="display-lg mt-5">
             What&apos;s local.{" "}
             <span className="paint-hl font-serif font-normal italic tracking-[-0.02em]">What&apos;s not connected yet.</span>
           </h2>

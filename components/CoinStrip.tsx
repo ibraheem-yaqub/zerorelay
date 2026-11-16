@@ -16,7 +16,7 @@ export default function CoinStrip() {
         <ScrollReveal className="mx-auto mb-12 flex w-full max-w-6xl flex-col justify-between gap-6 px-5 sm:mb-16 sm:px-8 md:flex-row md:items-end">
           <div>
             <p className="eyebrow text-[#1B170D]/75">WHAT CAN RIDE THE ROUTE / 03</p>
-            <h2 className="display-xl mt-5 max-w-4xl">
+            <h2 data-words className="display-xl mt-5 max-w-4xl">
               Eight kinds of value.{" "}
               <span className="font-serif font-normal italic tracking-[-0.02em]">One quiet lane.</span>
             </h2>

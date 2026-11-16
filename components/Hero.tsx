@@ -152,7 +152,7 @@ export default function Hero() {
             </div>
             <div className="border-x border-[#1B170D]/10 px-3 sm:px-6">
               <p className="font-mono text-[10px] tracking-[0.16em] text-[#1B170D]/70">CHAIN ID</p>
-              <p className="mt-2 whitespace-nowrap font-mono text-[11px] sm:text-sm"><span className="hero-chip-lime">4663 · 0x1237</span></p>
+              <p className="mt-2 whitespace-nowrap font-mono text-[11px] sm:text-sm"><span className="hero-chip-lime" data-scramble>4663 · 0x1237</span></p>
             </div>
             <div className="pl-3 sm:pl-6">
               <p className="font-mono text-[10px] tracking-[0.16em] text-[#1B170D]/70">NATIVE GAS</p>

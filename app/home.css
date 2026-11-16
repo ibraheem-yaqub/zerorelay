@@ -396,6 +396,11 @@
 
 .coin-strip-track { width: max-content; padding-bottom: 0.5rem; }
 
+/* Line the first coin up with the content column, leaving the gutter clear. */
+@media (min-width: 640px) {
+  .coin-strip-track { padding-inline: max(2rem, calc((100vw - 72rem) / 2 + 2rem)); }
+}
+
 /* Without the scroll layer (or on mobile) the strip is a native swipe row. */
 .coin-strip-viewport {
   overflow-x: auto;

@@ -14,6 +14,8 @@ import Marquee from "@/components/Marquee";
 import { BrandCoin } from "@/components/HeroCoins";
 import Navbar from "@/components/Navbar";
 import PointerGloss from "@/components/coins/PointerGloss";
+import RelayRail from "@/components/motion/RelayRail";
+import ScrollEffects from "@/components/motion/ScrollEffects";
 import ScrollReveal from "@/components/ScrollReveal";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -39,6 +41,9 @@ export default function HomePage() {
   return (
     <main className="home relative min-h-screen overflow-x-clip bg-[#1B170D] text-[#f7fbe2]">
       <PointerGloss />
+      <ScrollEffects />
+      <RelayRail />
+      <div className="grain" aria-hidden="true" />
       <Navbar />
       <Hero />
       <ChainTelemetry variant="feature" />
@@ -52,7 +57,7 @@ export default function HomePage() {
         <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
           <ScrollReveal className="lg:sticky lg:top-28 lg:self-start">
             <p className="eyebrow text-[#C6F700]">SECURITY / 05</p>
-            <h2 className="display-lg mt-5 text-[#f7fbe2]">
+            <h2 data-words className="display-lg mt-5 text-[#f7fbe2]">
               Quiet by design.
               <br />
               <span className="paint-hl paint-hl-block mt-2 font-serif font-normal italic tracking-[-0.02em]">Clear about the limits.</span>
@@ -90,7 +95,7 @@ export default function HomePage() {
           <div className="relative mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
               <p id="docs" className="eyebrow scroll-mt-24 text-[#1B170D]/75">LOCAL COMPILER / 06</p>
-              <h2 className="display-xl mt-5">
+              <h2 data-words className="display-xl mt-5">
                 Inspect the payload <span className="whitespace-nowrap font-serif font-normal italic tracking-[-0.02em]">before integration.</span>
               </h2>
               <p className="mt-6 max-w-lg text-base leading-7 text-[#1B170D]/75">Build a Robinhood Chain intent envelope without signing or sending it.</p>

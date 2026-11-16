@@ -163,7 +163,7 @@ export default function HowItWorks() {
         <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 sm:mb-16 md:flex-row md:items-end">
           <div>
             <p className="eyebrow text-[#4f6400]">HOW IT WORKS / 02</p>
-            <h2 className="display-xl mt-5 max-w-4xl">
+            <h2 data-words className="display-xl mt-5 max-w-4xl">
               Move value without{" "}
               <span className="paint-hl font-serif font-normal italic tracking-[-0.02em]">exposing intent.</span>
             </h2>

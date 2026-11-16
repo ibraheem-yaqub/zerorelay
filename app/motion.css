@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Scroll/motion layer (components/motion/*). Every rule here is either inert
+   without JS or disabled under prefers-reduced-motion.
+   ========================================================================== */
+
+/* --- Lenis --------------------------------------------------------------- */
+
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis,
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* --- word reveal --------------------------------------------------------- */
+
+.split-word { display: inline-block; }
+
+/* --- relay rail ---------------------------------------------------------- */
+
+.rail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 25;
+  width: 100%;
+  pointer-events: none;
+  display: none;
+}
+
+.rail.is-active { display: block; }
+
+.rail svg { display: block; overflow: visible; }
+
+.rail path { stroke-linecap: round; stroke-linejoin: round; }
+
+/* Undrawn route: faint dashes so the path reads before it is drawn. */
+.rail-track { stroke: rgba(150, 150, 130, 0.35); stroke-width: 1.5; stroke-dasharray: 2 8; }
+
+/* Drawn route: ink casing + lime core reads on ink, white and lime bands alike. */
+.rail-glow { stroke: rgba(198, 247, 0, 0.28); stroke-width: 12; }
+.rail-under { stroke: #1b170d; stroke-width: 6; }
+.rail-core { stroke: #c6f700; stroke-width: 2.5; }
+
+.rail-nodes circle {
+  fill: #1b170d;
+  stroke: rgba(150, 150, 130, 0.6);
+  stroke-width: 2;
+  transition: fill 400ms ease, stroke 400ms ease;
+}
+
+.rail-nodes circle.is-lit { fill: #c6f700; stroke: #1b170d; }
+
+.rail-rider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  will-change: transform;
+}
+
+.rail.has-head .rail-rider { opacity: 1; }
+
+.rail-coin {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  perspective: 300px;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
+}
+
+/* Flip in whenever the section (and so the coin type) changes. */
+.rail-coin-flip { animation: rail-flip 700ms cubic-bezier(0.3, 0.7, 0.2, 1.2) both; }
+
+@keyframes rail-flip {
+  from { transform: rotateY(-180deg) scale(0.7); }
+  to { transform: rotateY(0) scale(1); }
+}
+
+/* --- tilt + sheen -------------------------------------------------------- */
+
+.tilt-card { transition: rotate 500ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+.tilt-card.is-tilting { transition: rotate 120ms linear; }
+.tilt-card:not(.stack-card) { position: relative; }
+
+.tilt-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.06) 30%, transparent 55%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.tilt-card.is-tilting .tilt-sheen { opacity: 1; }
+.band-ink .tilt-sheen,
+.stack-card-ink .tilt-sheen { mix-blend-mode: screen; }
+.band-ink .tilt-card.is-tilting .tilt-sheen { opacity: 0.5; }
+
+/* --- film grain ---------------------------------------------------------- */
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.075;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1.6 -0.3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1s steps(8) infinite;
+}
+
+@keyframes grain {
+  0% { background-position: 0 0; }
+  12% { background-position: -47px 31px; }
+  25% { background-position: 63px -18px; }
+  37% { background-position: -22px -71px; }
+  50% { background-position: 81px 44px; }
+  62% { background-position: -66px 12px; }
+  75% { background-position: 15px 77px; }
+  87% { background-position: 54px -59px; }
+  100% { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+  .rail { display: none !important; }
+  .tilt-card { rotate: none !important; }
+}

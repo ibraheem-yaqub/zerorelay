@@ -100,7 +100,7 @@ function FeatureTelemetry() {
           <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 sm:mb-14 md:flex-row md:items-end">
             <div>
               <p className="eyebrow text-[#C6F700]">NETWORK PROFILE / 01</p>
-              <h2 id="telemetry-title" className="display-xl mt-5 flex items-center gap-4 text-[#f7fbe2]">
+              <h2 id="telemetry-title" data-words className="display-xl mt-5 flex items-center gap-4 text-[#f7fbe2]">
                 <ChainMark chain="robinhood" className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
                 Robinhood Chain L2
               </h2>
@@ -132,7 +132,7 @@ function FeatureTelemetry() {
                     <p className="mb-8 mt-4 text-[13px] leading-5 text-[#f7fbe2]/70">{metric.detail}</p>
                   )}
                   <div className="mt-auto flex items-center justify-between border-t border-[#f7fbe2]/[0.08] pt-4 font-mono text-[10px] tracking-[0.08em] text-[#f7fbe2]/60">
-                    <span>{ROBINHOOD_CHAIN.chainIdHex}</span>
+                    <span data-scramble>{ROBINHOOD_CHAIN.chainIdHex}</span>
                     <span>PREVIEW DATA</span>
                   </div>
                 </article>
