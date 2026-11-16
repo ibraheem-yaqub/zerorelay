@@ -29,7 +29,8 @@
 .hero-word {
   display: inline-block;
   white-space: pre;
-  animation: word-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+  animation: word-in 1000ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+  transform-origin: 50% 80%;
 }
 
 .hero-rise {
@@ -37,7 +38,7 @@
 }
 
 @keyframes word-in {
-  from { opacity: 0; filter: blur(14px); transform: translate3d(0, 0.28em, 0); }
+  from { opacity: 0; filter: blur(18px); transform: translate3d(0, 0.38em, 0) scale(0.96); }
   to { opacity: 1; filter: blur(0); transform: none; }
 }
 
@@ -457,3 +458,176 @@
   .coin-stage.is-static .coin-slot,
   .coin-stage.is-static .relay-line line { transition: none !important; }
 }
+
+/* --- story loop (HeroStory) --------------------------------------------- */
+
+.story {
+  --story-size: 84px;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.story.is-on { opacity: 1; }
+
+.story > * { position: absolute; left: 0; top: 0; }
+
+.story-lane { width: 100%; height: 100%; overflow: visible; }
+.story-lane line {
+  stroke: rgba(27, 23, 13, 0.28);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+}
+
+.story-lane-label {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  color: rgba(27, 23, 13, 0.72);
+}
+
+/* Sequencer node at the foot of the ride. */
+.story-seq { width: 0; height: 0; }
+.story-seq-dot,
+.story-seq-pulse {
+  position: absolute;
+  left: -9px;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+.story-seq-dot { background: #1b170d; box-shadow: 0 0 0 3px #c6f700, 0 0 18px rgba(198, 247, 0, 0.9); }
+.story-seq-pulse { border: 2px solid #9fc600; opacity: 0; }
+.story-seq-label {
+  position: absolute;
+  right: 18px;
+  top: -12px;
+  border-radius: 999px;
+  background: #1b170d;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #c6f700;
+  white-space: nowrap;
+}
+
+/* Coral scanners + READ tag (ink text on coral: about 4.6:1). */
+.story-scan { width: 0; height: 0; opacity: 0; }
+.story-scan svg {
+  position: absolute;
+  stroke: #e2512f;
+  stroke-width: 3;
+  stroke-linecap: round;
+  overflow: visible;
+}
+.story-scan-0 svg { left: -36px; top: -36px; width: 72px; height: 72px; }
+.story-scan-1 svg { left: -56px; top: -56px; width: 112px; height: 112px; stroke-width: 2.5; }
+.story-scan-dot { fill: #e2512f; stroke: none; }
+
+.story-tag { width: 0; height: 0; opacity: 0; }
+.story-tag span {
+  position: absolute;
+  left: 34px;
+  top: -62px;
+  border-radius: 6px;
+  background: #e2512f;
+  padding: 0.2rem 0.45rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #1b170d;
+  box-shadow: 0 6px 16px -6px rgba(226, 81, 47, 0.7);
+}
+
+/* Glitch: RGB-split jitter on the scanners right as the seal closes. */
+.story.is-glitch .story-scan svg,
+.story.is-glitch .story-tag span {
+  filter: drop-shadow(3px 0 0 rgba(198, 247, 0, 0.9)) drop-shadow(-3px 0 0 rgba(27, 23, 13, 0.6));
+  clip-path: inset(10% 0 22% 0);
+}
+
+/* The travelling coin, its seal ring and burst. */
+.story-actor { width: 0; height: 0; opacity: 0; }
+
+.story-coin {
+  position: absolute;
+  left: calc(var(--story-size) / -2);
+  top: calc(var(--story-size) / -2);
+  width: var(--story-size);
+  height: var(--story-size);
+  perspective: 600px;
+  filter: drop-shadow(0 14px 14px rgba(27, 23, 13, 0.3));
+}
+
+.story-seal {
+  position: absolute;
+  left: calc(var(--story-size) * -0.68);
+  top: calc(var(--story-size) * -0.68);
+  width: calc(var(--story-size) * 1.36);
+  height: calc(var(--story-size) * 1.36);
+  overflow: visible;
+  opacity: 0;
+  rotate: -90deg;
+}
+.story-seal circle {
+  stroke: #c6f700;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 6px rgba(198, 247, 0, 0.95)) drop-shadow(0 0 1px #4f6400);
+}
+
+.story-particle {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c6f700;
+  box-shadow: 0 0 0 1.5px #1b170d;
+  opacity: 0;
+}
+.story-particle:nth-child(3n) { width: 5px; height: 5px; background: #fff; }
+
+
+@media (max-width: 767px) {
+  .story { --story-size: 62px; }
+  .story-lane-label { display: none; }
+}
+
+.coin-stage.is-paused .story * { animation-play-state: paused !important; }
+
+/* --- cursor spotlight + magnetic buttons -------------------------------- */
+
+.hero-spotlight {
+  background: radial-gradient(520px circle at var(--sx, 50%) var(--sy, 30%), rgba(198, 247, 0, 0.32), rgba(198, 247, 0, 0.08) 45%, transparent 70%);
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.has-spotlight .hero-spotlight { opacity: 1; }
+
+[data-magnetic] {
+  transition:
+    translate 500ms cubic-bezier(0.2, 0.9, 0.2, 1.3),
+    transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease;
+}
+
+[data-magnetic].is-magnetic { transition-duration: 120ms, 300ms, 300ms, 300ms, 300ms, 300ms; }
+
+/* Static composition: the aligned coins occupy the line, so drop the node there. */
+.story.is-static .story-seq { display: none; }

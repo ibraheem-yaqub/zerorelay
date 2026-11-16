@@ -3,6 +3,8 @@
 import { CSSProperties, useEffect, useRef } from "react";
 import CoinDisc, { EDGE_LAYERS } from "@/components/coins/CoinDisc";
 import type { CoinKind } from "@/lib/coin-types";
+import { slashGeometry } from "@/lib/hero-geometry";
+import HeroStory from "@/components/HeroStory";
 
 /**
  * Decorative brand art for the home hero: asset / intent coins floating at three
@@ -31,8 +33,8 @@ const COINS: Coin[] = [
   { kind: "usdg", layer: 1, size: 92, fx: 74, fy: 14, t: 0.24, spin: "flip", dur: 12, bob: 6.4, mobile: true },
   { kind: "stock", layer: 1, size: 84, fx: 30, fy: 46, t: 0.47, spin: "wobble", dur: 9.5, bob: 7.1 },
   { kind: "launch", layer: 1, size: 78, fx: 86, fy: 54, t: 0.59, spin: "flip", dur: 14, bob: 5.9, mobile: true },
-  { kind: "eth", layer: 2, size: 132, fx: 46, fy: 24, t: 0.35, spin: "wobble", dur: 10.5, bob: 6.6, mobile: true },
-  { kind: "swap", layer: 2, size: 150, fx: 58, fy: 74, t: 0.72, spin: "flip", dur: 13.5, bob: 7.4, mobile: true },
+  { kind: "eth", layer: 2, size: 132, fx: 46, fy: 24, t: 0.35, spin: "wobble", dur: 10.5, bob: 6.6 },
+  { kind: "swap", layer: 2, size: 150, fx: 58, fy: 74, t: 0.72, spin: "flip", dur: 13.5, bob: 7.4 },
 ];
 
 // Uniform-ish scale coins take when they settle on the line, so the row reads as one route.
@@ -43,8 +45,6 @@ const DEPTH = [
   [22, 0.26],
   [40, 0.48],
 ];
-// The logo's slash leans 15° from vertical (top to the right).
-const SLASH = Math.tan((15 * Math.PI) / 180);
 
 export default function HeroCoins({ className = "" }: { className?: string }) {
   const stageRef = useRef<HTMLDivElement>(null);
@@ -68,11 +68,8 @@ export default function HeroCoins({ className = "" }: { className?: string }) {
     const layout = () => {
       const { width: w, height: h } = stage.getBoundingClientRect();
       if (!w || !h) return;
-      const mobile = w < 640;
+      const { mobile, top, bottom } = slashGeometry(w, h);
       drift = mobile ? 0.1 : 1;
-      const cx = w * (mobile ? 0.5 : 0.42);
-      const top = { x: cx + SLASH * h * 0.56, y: -h * 0.06 };
-      const bottom = { x: cx - SLASH * h * 0.56, y: h * 1.06 };
       svg.querySelectorAll("line").forEach((line) => {
         line.setAttribute("x1", `${top.x}`);
         line.setAttribute("y1", `${top.y}`);
@@ -159,6 +156,7 @@ export default function HeroCoins({ className = "" }: { className?: string }) {
       at(6200, () => {
         stage.classList.remove("is-aligned");
         stage.classList.add("is-released");
+        stage.dispatchEvent(new Event("relay:released")); // hands over to the story loop
         target.strength = 1;
         kick();
       });
@@ -234,6 +232,7 @@ export default function HeroCoins({ className = "" }: { className?: string }) {
       ))}
 
       <div ref={packetRef} className="relay-packet" />
+      <HeroStory />
     </div>
   );
 }

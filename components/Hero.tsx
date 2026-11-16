@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { CSSProperties, FormEvent, useState } from "react";
+import { CSSProperties, FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, CircleAlert, Search, ShieldCheck } from "lucide-react";
 import { ADDRESS_PATTERN } from "@/lib/robinhood-chain";
 import ChainMark from "@/components/ChainMark";
 import HeroCoins from "@/components/HeroCoins";
 import { COIN_CAPTION } from "@/lib/coin-types";
+import { bindMagnetic, canHoverFx } from "@/lib/motion/magnetic";
 
 const LEAD_WORDS = ["Protecting", "every", "swap", "on"];
 const ACCENT_WORDS = ["Robinhood", "Chain."];
@@ -17,6 +18,38 @@ const rise = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 export default function Hero() {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<"idle" | "valid" | "invalid">("idle");
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Soft lime spotlight that follows the cursor, and magnetic main buttons.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !canHoverFx()) return;
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const write = () => {
+      frame = 0;
+      section.style.setProperty("--sx", `${x}px`);
+      section.style.setProperty("--sy", `${y}px`);
+    };
+    const onMove = (event: PointerEvent) => {
+      const r = section.getBoundingClientRect();
+      x = event.clientX - r.left;
+      y = event.clientY - r.top;
+      section.classList.add("has-spotlight");
+      if (!frame) frame = requestAnimationFrame(write);
+    };
+    const onLeave = () => section.classList.remove("has-spotlight");
+    section.addEventListener("pointermove", onMove);
+    section.addEventListener("pointerleave", onLeave);
+    const unbind = Array.from(section.querySelectorAll<HTMLElement>("[data-magnetic]")).map((el) => bindMagnetic(el));
+    return () => {
+      cancelAnimationFrame(frame);
+      section.removeEventListener("pointermove", onMove);
+      section.removeEventListener("pointerleave", onLeave);
+      unbind.forEach((fn) => fn());
+    };
+  }, []);
 
   function inspectAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,8 +57,9 @@ export default function Hero() {
   }
 
   return (
-    <section className="hero-light relative isolate overflow-hidden rounded-b-[2.5rem] px-5 pb-16 pt-14 text-[#1B170D] sm:px-8 sm:pb-20 sm:pt-20 lg:min-h-[calc(100svh-68px)] lg:pb-24 lg:pt-24">
+    <section ref={sectionRef} className="hero-light relative isolate overflow-hidden rounded-b-[2.5rem] px-5 pb-16 pt-14 text-[#1B170D] sm:px-8 sm:pb-20 sm:pt-20 lg:min-h-[calc(100svh-68px)] lg:pb-24 lg:pt-24">
       <div className="hero-light-grid pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
+      <div className="hero-spotlight pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <div className="relative z-10 max-w-2xl">
@@ -89,7 +123,7 @@ export default function Hero() {
                   className="h-12 min-w-0 flex-1 bg-transparent font-mono text-[12px] text-[#1B170D] outline-none placeholder:font-sans placeholder:text-sm placeholder:text-[#1B170D]/55"
                 />
               </div>
-              <button type="submit" className="btn-ink group inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold">
+              <button type="submit" data-magnetic className="btn-ink group inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold">
                 Inspect route <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               </button>
             </div>
@@ -103,10 +137,10 @@ export default function Hero() {
           </form>
 
           <div className="hero-rise mt-7 flex flex-wrap items-center gap-3" style={rise(940)}>
-            <Link href="#terminal" className="btn-lime group inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold">
+            <Link href="#terminal" data-magnetic className="btn-lime group inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold">
               Explore private execution <ArrowDown size={14} className="transition-transform duration-300 group-hover:translate-y-0.5" />
             </Link>
-            <Link href="/dashboard" className="btn-ghost group inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium">
+            <Link href="/dashboard" data-magnetic className="btn-ghost group inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium">
               Open terminal <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
           </div>
