@@ -11,6 +11,7 @@ import Hero from "@/components/Hero";
 import { BrandCoin } from "@/components/HeroCoins";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
+import SiteFooter from "@/components/SiteFooter";
 
 const protections = [
   {
@@ -98,19 +99,7 @@ export default function HomePage() {
         </ScrollReveal>
       </section>
 
-      <footer className="px-5 pb-10 pt-14 sm:px-8 sm:pt-16">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-          <Link href="/" aria-label="ZeroRelay home" className="group inline-flex items-center gap-3">
-            {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG */}
-            <img src="/zerorelay-mark-lime.svg" alt="" width={36} height={36} className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[15deg]" />
-            <span className="text-lg font-semibold tracking-[-0.04em] text-[#f7fbe2]">ZeroRelay</span>
-          </Link>
-          <div className="flex flex-col gap-2 font-mono text-[10px] tracking-[0.08em] text-[#f7fbe2]/40 sm:items-end">
-            <span>LOCAL PREVIEW · NO SIGNING · NO RPC SUBMISSION</span>
-            <span>© 2026 ZERO RELAY · ROBINHOOD CHAIN · 0x1237</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter lines={["LOCAL PREVIEW · NO SIGNING · NO RPC SUBMISSION", "© 2026 ZERO RELAY · ROBINHOOD CHAIN · 0x1237"]} />
     </main>
   );
 }
